@@ -4,10 +4,9 @@
 
 <template>
     <main class="min-h-screen bg-white">
-        2
+        <HeroSection />
+        <Distributor />
     </main>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

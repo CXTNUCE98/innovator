@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Facebook from "@/public/social_facebook.png"
-import Instagram from "@/public/social_instagram.png"
+// import Facebook from "@/public/social_facebook.png"
+// import Instagram from "@/public/social_instagram.png"
 
 const footerLinks = {
     'Trang': [
@@ -23,8 +23,8 @@ const footerLinks = {
 };
 
 const socialLinks = [
-    { icon: 'facebook', path: Facebook, redirect: 'https://www.facebook.com/talafanMU' },
-    { icon: 'instagram', path: Instagram, redirect: 'https://www.instagram.com/thuongg149/' },
+    { icon: 'facebook', path: '1', redirect: 'https://www.facebook.com/talafanMU' },
+    { icon: 'instagram', path: '2', redirect: 'https://www.instagram.com/thuongg149/' },
     // { icon: 'twitter', path: 'https://twitter.com', }
 ];
 </script>

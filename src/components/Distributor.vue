@@ -1,33 +1,33 @@
 <script setup lang="ts">
-import Emirates from "@/public/emirates.png"
-import Trivago from "@/public/trivago.png"
-import Airbnb from "@/public/airbnb.png"
-import Turkish from "@/public/turkish.png"
-import Swiss from "@/public/swiss.png"
+import Kaching from "@/public/kaching.png"
+import Amazon from "@/public/amazon.png"
+import Anti from "@/public/anti_hang_gia.png"
+import Tiktok from "@/public/tiktok.png"
+import Zecom from "@/public/zecom.png"
+import Netflix from "@/public/netflix.png"
 
 const distributor = [
-    Emirates,
-    Trivago,
-    Airbnb,
-    Turkish,
-    Swiss,
-    Emirates,
-    Trivago,
-    Airbnb,
-    Turkish,
-    Swiss
+    Kaching,
+    Amazon,
+    Anti,
+    Tiktok,
+    Zecom,
+    Netflix,
+    // Airbnb,
+    // Turkish,
+    // Swiss
 ]
 
 </script>
 
 <template>
     <div class="marquee py-14">
-        <div class="marquee-content flex justify-around w-full" >
+        <div class="marquee-content flex justify-around w-full ">
             <template v-for="i in distributor" :key="i">
-                <img :src="i" class="marquee-item">
+                <img :src="i" class="marquee-item object-contain w-auto h-40px">
             </template>
             <template v-for="i in distributor" :key="'dup-' + i">
-                <img :src="i" class="marquee-item">
+                <img :src="i" class="marquee-item object-contain w-auto h-40px">
             </template>
         </div>
     </div>
@@ -54,6 +54,7 @@ const distributor = [
     0% {
         transform: translateX(0);
     }
+
     100% {
         transform: translateX(-50%);
     }

@@ -1,180 +1,101 @@
-<script setup lang="ts">
-import HeroImage from "../public/hero_header.png"
+<script lang="ts" setup>
 
-import { Swiper, SwiperSlide } from 'swiper/vue'
-import { Autoplay, EffectFade, Navigation, Pagination } from 'swiper/modules'
-import 'swiper/css'
-import 'swiper/css/effect-fade'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
+const isVisible = ref(false)
+const sloganBox = ref(null)
 
-const slides = [
-    {
-        image: HeroImage,
-        title: 'B Design',
-        subtitle: 'Dù bạn đang tìm kiếm một bộ trang phục trình diễn, đồng phục nhóm hay phong cách cá nhân độc đáo – chúng tôi giúp bạn biến điều đó thành hiện thực.',
-        cta: 'Liên hệ'
-    },
+onMounted(() => {
+    // Trigger entrance animations after component is mounted
+    setTimeout(() => {
+        isVisible.value = true
+    }, 100)
 
-];
+    // Optional: Animation for slogan box when scrolling
+    if (window && 'IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    isVisible.value = true
+                    observer.disconnect()
+                }
+            })
+        }, { threshold: 0.1 })
 
-const swiperOptions = {
-    modules: [Autoplay, EffectFade, Navigation, Pagination],
-    effect: 'fade',
-    speed: 1000,
-    loop: true,
-    autoplay: {
-        delay: 5000,
-        disableOnInteraction: false
-    },
-    navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev'
-    },
-    pagination: {
-        el: '.swiper-pagination',
-        clickable: true
+        if (sloganBox.value) {
+            observer.observe(sloganBox.value)
+        }
     }
-};
+})
 </script>
 
 <template>
-    <section class="relative h-[420px] md:h-screen overflow-hidden">
-        <Swiper v-bind="swiperOptions" class="h-full">
-            <SwiperSlide v-for="(slide, index) in slides" :key="index" class="relative">
-                <!-- Overlay -->
-                <div class="absolute inset-0   to-transparent z-10"></div>
+    <section class="relative md:h-640px h-630px w-full overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 img-color "></div>
+        </div>
 
-                <!-- Background Image -->
-                <img :src="slide.image" :alt="slide.title"
-                    class="absolute inset-0 w-full h-full object-cover object-center rounded-bl-[100px] md:rounded-bl-[291px] opacity-80">
-
-                <!-- Content -->
-                <div class="relative z-20 h-full container mx-auto px-4 flex items-center">
-                    <div class="max-w-2xl md:max-w-3xl lg:max-w-4xl">
-                        <h1 class="text-32px md:text-85px md:leading-120% font-bold mb-4 md:mb-6 playfair-display
-                            transform transition-all duration-700 translate-y-0 opacity-100 text-#000000">
-                            {{ slide.title }}
-                        </h1>
-                        <p class="text-base md:text-xl mb-6 md:mb-8 
-                            transform transition-all duration-700 delay-200 translate-y-0 opacity-100 text-#000000">
-                            {{ slide.subtitle }}
-                        </p>
-                        <div class="bg-#292F36 text-#FFFFFF w-200px md:w-220px h-48px md:h-75px px-48px py-26px rounded-12px 
-                            hover:bg-black hover:text-white transition-all duration-300 
-                            transform hover:scale-105 flex items-center justify-center gap-2 font-semibold text-18px">
-                            {{ slide.cta }}
-                            <i class='bx bx-right-arrow-alt text-#CDA274 text-32px'></i>
-                        </div>
+        <!-- Content Container -->
+        <div class="relative h-100% z-10 container flex justify-center items-center mx-auto px-4 py-16 md:py-24 lg:py-32">
+            <div class="flex flex-col items-center justify-center text-center text-white ">
+                <!-- Animated Slogan Box -->
+                <div class="bg-white rounded-lg shadow-lg p-4 md:p-6 mb-6 transform transition-all duration-700 opacity-0 translate-y-8"
+                    :class="{ 'opacity-100 translate-y-0': isVisible }" ref="sloganBox">
+                    <div class="absolute top--8 left--7 z-11">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="39" height="43" viewBox="0 0 39 43" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M13.0489 40.1279C9.32492 39.0762 5.42609 38.5457 1.64397 38.0597C0.829355 37.9578 0.0730442 38.5264 0.0148577 39.3274C-0.101515 40.129 0.480691 40.8622 1.23712 40.9641C4.90286 41.4319 8.68465 41.9326 12.234 42.945C12.9904 43.1646 13.8054 42.7126 14.0381 41.9349C14.2709 41.1579 13.8053 40.348 13.0489 40.1279Z"
+                                fill="white" />
+                            <path fill-rule="evenodd" clip-rule="even odd"
+                                d="M24.3365 25.2168C18.3433 19.0619 11.5937 13.6993 5.71685 7.3793C5.19318 6.78905 4.26219 6.75743 3.68033 7.30845C3.09846 7.86005 3.0405 8.78758 3.62237 9.37783C9.4992 15.716 16.2488 21.0961 22.242 27.2692C22.8239 27.8454 23.7547 27.8535 24.3365 27.2867C24.8602 26.7205 24.9184 25.793 24.3365 25.2168Z"
+                                fill="white" />
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M35.5674 1.54341C35.742 5.06616 35.9162 8.58891 36.0907 12.1123C36.0907 12.9192 36.7893 13.5422 37.6039 13.503C38.4185 13.4631 39.0001 12.7763 39.0001 11.9688C38.8255 8.44018 38.6513 4.91216 38.4767 1.38413C38.4185 0.577224 37.7202 -0.0417174 36.9056 0.00219986C36.1492 0.0461172 35.5092 0.737085 35.5674 1.54341Z"
+                                fill="white" />
+                        </svg>
                     </div>
+                    <h2 class="flex items-center justify-center gap-2 md:gap-4">
+                        <span class="flex items-center gap-2">
+                            <div class="bg-#FDFFEB p-2 rounded flex items-center justify-center">
+                                <svg class="w-34px h-34px text-#B4CD26" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" />
+                                </svg>
+                            </div>
+                            <span class="text-16px md:text-48px font-bold text-yellow-500">Innovate Today,</span>
+                        </span>
+                        <span class="text-16px md:text-48px font-bold text-gray-800">Grow Tomorrow</span>
+                    </h2>
                 </div>
-            </SwiperSlide>
 
-            <!-- Pagination -->
-            <div class="swiper-pagination !bottom-8"></div>
-        </Swiper>
+                <!-- Main Heading -->
+                <h1 class="text-24px md:text-32px lg:text-38px font-600 mb-10px transform transition-all duration-700 delay-300 opacity-0 translate-y-8"
+                    :class="{ 'opacity-100 translate-y-0': isVisible }">
+                    Định hình tương lai đổi mới kỹ thuật số
+                </h1>
+
+                <!-- Description -->
+                <p class="text-20px px-4 md:(text-24px px-0) mb-10 transform transition-all duration-700 delay-500 opacity-0 translate-y-8"
+                    :class="{ 'opacity-100 translate-y-0': isVisible }">
+                    Hãy tham gia với chúng tôi trong hành trình học tập thú vị này và khám phá tiềm năng của bạn
+                </p>
+
+                <!-- CTA Button -->
+                <button
+                    class="bg-white text-20px text-gray-800 hover:bg-yellow-500 hover:text-white font-medium rounded-md px-10 py-3 transform transition-all duration-700 delay-700 opacity-0 translate-y-8"
+                    :class="{ 'opacity-100 translate-y-0': isVisible }">
+                    Đăng ký ngay
+                </button>
+
+
+            </div>
+        </div>
     </section>
 </template>
+  
 
+  
 <style scoped>
-.container {
-    max-width: 1200px;
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
-@media (min-width: 640px) {
-    .container {
-        padding-left: 2rem;
-        padding-right: 2rem;
-    }
-}
-
-@media (min-width: 1024px) {
-    .container {
-        padding-left: 3rem;
-        padding-right: 3rem;
-    }
-}
-
-/* Custom Swiper Styles */
-:deep(.swiper-button-prev),
-:deep(.swiper-button-next) {
-    width: 3rem;
-    height: 3rem;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(4px);
-    border-radius: 50%;
-    transition: all 0.3s ease;
-}
-
-:deep(.swiper-button-prev:hover),
-:deep(.swiper-button-next:hover) {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.1);
-}
-
-:deep(.swiper-pagination-bullet) {
-    width: 0.75rem;
-    height: 0.75rem;
-    background: rgba(255, 255, 255, 0.5);
-    transition: all 0.3s ease;
-}
-
-:deep(.swiper-pagination-bullet-active) {
-    background: #fff;
-    transform: scale(1.25);
-}
-
-/* Transform utilities */
-.translate-y-0 {
-    transform: translateY(0);
-}
-
-/* Hover animations */
-.hover\:scale-105:hover {
-    transform: scale(1.05);
-}
-
-/* Z-index utilities */
-.z-10 {
-    z-index: 10;
-}
-
-.z-20 {
-    z-index: 20;
-}
-
-/* Gradient overlay */
-.from-black\/50 {
-    --tw-gradient-from: rgb(0 0 0 / 0.5);
-    --tw-gradient-to: rgb(0 0 0 / 0);
-    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-
-.playfair-display {
-    font-family: "Playfair Display", serif;
-    font-optical-sizing: auto;
-    font-weight: 700;
-    font-style: normal;
-}
-
-/* Responsive adjustments */
-@media (max-width: 640px) {
-    .max-w-2xl {
-        max-width: 100%;
-    }
-}
-
-@media (min-width: 641px) and (max-width: 1024px) {
-    .max-w-2xl {
-        max-width: 28rem;
-    }
-}
-
-@media (min-width: 1025px) {
-    .max-w-2xl {
-        max-width: 32rem;
-    }
+.img-color {
+    background: linear-gradient(0deg, rgba(252, 175, 23, 0.20) 0%, rgba(252, 175, 23, 0.20) 100%), linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), url('@/public/hero_section.jpg') lightgray 50% / cover no-repeat;
 }
 </style>

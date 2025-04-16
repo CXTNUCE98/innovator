@@ -130,7 +130,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div class="w-full px-6 md:px-10 lg:px-[200px] py-[60px] md:py-[80px]">
+    <div class="w-full px-6 md:px-10% lg:px-20% py-[60px] md:py-[80px]">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-4xl font-semibold">Khoá học</h2>
             <div class="flex gap-4">
@@ -158,7 +158,7 @@ onBeforeUnmount(() => {
             }" @transitionend="handleTransitionEnd">
                 <div v-for="(item, index) in extendedCourses" :key="index" class="box-border "
                     :style="{ width: `${100 / extendedCourses.length}%` }">
-                    <div class="bg-neutral-50 min-w-330px rounded-2xl shadow-md p-4 flex flex-col gap-4 h-full">
+                    <div class="bg-neutral-50 min-w-300px rounded-2xl shadow-md p-4 flex flex-col gap-4 h-full">
                         <div class="h-48 rounded-xl overflow-hidden">
                             <img :src="item.img" alt="" class="w-full h-full object-cover" />
                         </div>

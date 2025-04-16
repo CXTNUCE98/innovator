@@ -61,7 +61,7 @@ onMounted(() => {
         <Distributor />
 
         <!-- Start your business journey today -->
-        <div class="flex justify-center px-4 md:px-10 lg:px-200px">
+        <div class="flex justify-center px-4 md:px-10% lg:px-20%">
             <div class="py-16 md:py-16 lg:py-80px w-full">
                 <div class="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16">
                     <!-- Text content -->
@@ -110,6 +110,10 @@ onMounted(() => {
 
         <!-- Course -->
         <Courses />
+
+        <!-- Team of experts -->
+        <TeamOfExperts />
+
     </main>
 </template>
 

@@ -14,7 +14,7 @@ const team = [
         <div class="mx-auto flex flex-col lg:flex-row items-center gap-10">
             <!-- Left content -->
             <div class="lg:w-1/3 ">
-                <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Đội ngũ chuyên gia</h2>
+                <h2 class="text-2xl md:text-36px font-bold text-gray-900 mb-4">Đội ngũ chuyên gia</h2>
                 <p class="text-gray-600 mb-6">
                     Có kiến thức sâu rộng và kinh nghiệm thực tế, sẵn sàng chia sẻ cùng học viên trong quá trình học tập
                 </p>

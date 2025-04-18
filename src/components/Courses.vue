@@ -263,11 +263,11 @@ onBeforeUnmount(() => {
 
         <div class="overflow-hidden" ref="carouselRef" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave"
             @focusin="handleFocusIn" @focusout="handleFocusOut">
-            <div class="flex py-2" :class="isTransitioning ? 'transition-transform duration-500 ease-in-out' : ''" :style="{
+            <div class="flex py-2 gap-24px" :class="isTransitioning ? 'transition-transform duration-500 ease-in-out' : ''" :style="{
                 transform: `translateX(-${currentIndex * (100 / extendedCourses.length)}%)`,
                 width: `${(extendedCourses.length / visibleCourses) * 100}%`,
             }" @transitionend="handleTransitionEnd">
-                <div v-for="(item, index) in extendedCourses" :key="index" class="box-border px-3"
+                <div v-for="(item, index) in extendedCourses" :key="index" class="box-border"
                     :style="{ width: `${100 / extendedCourses.length}%`, minWidth: '250px' }">
                     <div class="bg-neutral-50 rounded-2xl shadow-md p-4 flex flex-col gap-4 h-full">
                         <div class="h-48 rounded-xl overflow-hidden">

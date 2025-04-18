@@ -113,7 +113,15 @@ onMounted(() => {
 
         <!-- Team of experts -->
         <TeamOfExperts />
+        
+        <!-- Trainning method -->
+         <TrainingMethod />
 
+         <!-- Student feedback -->
+          <StudentFeedback />
+
+          <!-- Featured Articles -->
+           <FeaturedArticles />
     </main>
 </template>
 

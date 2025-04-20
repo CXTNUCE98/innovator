@@ -30,52 +30,64 @@ const socialLinks = [
 </script>
 
 <template>
-    <footer class="mt-24 pt-16 pb-8 border-t-1 border-#C9C9C9 ">
+    <footer class="bg-[#fbc04d] text-black py-10">
         <div class="container mx-auto px-4">
-            <!-- Main Footer Content -->
-            <div class="flex flex-col gap-8 mb-12 justify-center md:(justify-start flex-row)">
-                <!-- Brand Section -->
-                <div class="grow-2 text-center max-w-393px md:text-left">
-                    <NuxtLink to="/" class="text-40px font-bold flex gap-2 md:justify-start justify-center items-end playfair-display text-#292F36">
-                        <img src="@/public/logo.png" class="pb-3 h-48px" />
-                        Design
-                    </NuxtLink>
-
-                    <p class="text-gray-600 mb-6 text-22px md:px-0 px-2">
-                        Thiết kế theo yêu cầu, định hình phong cách của bạn
-                    </p>
-                    <div class="flex gap-54px space-x-4 md:justify-start justify-center">
-                        <a v-for="social in socialLinks" :key="social.icon" :href="social.redirect" target="_blank"
-                            rel="noopener noreferrer" class="text-gray-600 hover:text-black transition-colors">
-                            <img :src="social.path" alt="social">
-                            <!-- <span class="sr-only">{{ social.icon }}</span> -->
-                            <!-- <i :class="'fab fa-' + social.icon"></i> -->
-                        </a>
+            <div class="flex flex-col md:flex-row justify-between gap-8">
+                <!-- Logo + Info -->
+                <div class="space-y-3 max-w-sm">
+                    <img src="../public/logo_black.png" alt="Innovator Academy" />
+                    <div class="flex items-center gap-2">
+                        <img src="../public/gmail.png" class="h-18px" alt="gmail-logo">
+                        <span>Innovatoracademy@gmail.com</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <img src="../public/Call.png" class="h-18px" alt="call-logo">
+                        <span>+8435 731 9979</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <img src="../public/location.png" class="h-18px" alt="location-logo">
+                        <span>
+                            Tầng 7, toà nhà Milk Group, 212 - 214 Nguyễn Trãi, Thanh Xuân, Hà Nội
+                        </span>
                     </div>
                 </div>
 
-                <!-- Footer Links -->
-                <template v-for="(links, title) in footerLinks" :key="title">
-                    <div class="grow-1 md:(block text-left) flex flex-col items-center text-center" :class="{'grow-2' :title === 'Liên hệ'}">
-                        <h4 class="font-500 mb-4 text-25px playfair-display">{{ title }}</h4>
-                        <ul class="space-y-2">
-                            <li v-for="link in links" :key="link.path">
-                                <NuxtLink :to="link.path"
-                                    class="text-#4D5053 text-22px font-400 hover:text-black transition-colors">
-                                    {{ link.label }}
-                                </NuxtLink>
-                            </li>
-                        </ul>
-                    </div>
-                </template>
+                <!-- Giới thiệu -->
+                <div>
+                    <h3 class="font-semibold mb-3">Giới thiệu</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#" class="hover:underline">Sản phẩm và dịch vụ</a></li>
+                        <li><a href="#" class="hover:underline">Phương pháp đào tạo</a></li>
+                        <li><a href="#" class="hover:underline">Đội ngũ giảng viên</a></li>
+                        <li><a href="#" class="hover:underline">Thành tựu và dự án</a></li>
+                    </ul>
+                </div>
 
+                <!-- Về chúng tôi -->
+                <div>
+                    <h3 class="font-semibold mb-3">Về chúng tôi</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#" class="hover:underline">Sứ mệnh và tầm nhìn</a></li>
+                        <li><a href="#" class="hover:underline">Giá trị cốt lõi</a></li>
+                        <li><a href="#" class="hover:underline">Đối tác và hợp tác</a></li>
+                        <li><a href="#" class="hover:underline">Chính sách và điều khoản</a></li>
+                    </ul>
+                </div>
+
+                <!-- Kết nối -->
+                <div>
+                    <h3 class="font-semibold mb-3">Kết nối với chúng tôi</h3>
+                    <div class="flex gap-4">
+                        <a href="#"><i class='bx bxl-facebook-circle text-20px'></i></a>
+                        <a href="#"><i class='bx bxl-twitter text-20px'></i></a>
+                        <a href="#"><i class='bx bxl-linkedin-square text-20px'></i></a>
+                    </div>
+                </div>
             </div>
 
-            <!-- Copyright -->
-            <div class="border-t border-gray-200 pt-8">
-                <p class="text-center text-gray-600 text-sm">
-                    © {{ new Date().getFullYear() }} B Design. All rights reserved.
-                </p>
+            <!-- Bottom line -->
+            <div class="border-t border-black mt-8 pt-4 text-center text-sm">
+                © 2024 Design by GabDol
             </div>
         </div>
     </footer>

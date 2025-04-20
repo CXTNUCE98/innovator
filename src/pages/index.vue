@@ -1,49 +1,6 @@
 <script setup>
-import Dropship from "@/public/course/dropship.png"
-import Amazon from "@/public/course/amazon.png"
-import Livestream from "@/public/course/livestream.png"
-import Teamwork from "@/public/course/teamwork.png"
 
 const isVisible = ref(false);
-
-const courses = [
-    {
-        name: 'Khóa học Dropship',
-        sessions: 6,
-        slot: 16,
-        type: 'Cơ bản',
-        rate: 5,
-        link: '1',
-        img: Dropship,
-    },
-    {
-        name: 'Khóa học Amazon',
-        sessions: 6,
-        slot: 16,
-        type: 'Cơ bản',
-        rate: 5,
-        link: '1',
-        img: Amazon,
-    },
-    {
-        name: 'Khóa học Livestream',
-        sessions: 6,
-        slot: 16,
-        type: 'Nâng cao',
-        rate: 5,
-        link: '1',
-        img: Livestream,
-    },
-    {
-        name: 'Khóa học Teamwork',
-        sessions: 6,
-        slot: 16,
-        type: 'Cơ bản',
-        rate: 5,
-        link: '1',
-        img: Teamwork,
-    },
-]
 
 onMounted(() => {
     // Kích hoạt animation khi component được mount
@@ -75,8 +32,10 @@ onMounted(() => {
                                 nay</span></div>
                         <div
                             class="justify-start text-Text&Icon-Text-body text-base font-normal font-['Inter'] leading-24px md:(leading-9 text-xl) tracking-tight text-#555555">
-                            Tại Innovator Academy, chúng tôi cam kết mang đến những khóa học chất lượng và thực tiễn trong
-                            lĩnh vực. Với đội ngũ giảng viên giàu kinh nghiệm và phương pháp giảng dạy hiện đại, chúng tôi
+                            Tại Innovator Academy, chúng tôi cam kết mang đến những khóa học chất lượng và thực tiễn
+                            trong
+                            lĩnh vực. Với đội ngũ giảng viên giàu kinh nghiệm và phương pháp giảng dạy hiện đại, chúng
+                            tôi
                             đã giúp hàng ngàn học viên đạt được thành công vượt bậc trong sự nghiệp.
                         </div>
                         <div
@@ -96,7 +55,8 @@ onMounted(() => {
                         </div>
 
                         <div class="absolute inset-0 p-0 md:p-5">
-                            <iframe class="w-full h-full rounded-lg object-cover shadow-lg transform transition-transform"
+                            <iframe
+                                class="w-full h-full rounded-lg object-cover shadow-lg transform transition-transform"
                                 src="https://www.youtube.com/embed/Wb06kwt_f9U?si=8CkW5YaNSysQ5NQz&autoplay=1"
                                 title="YouTube video player" frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -113,15 +73,18 @@ onMounted(() => {
 
         <!-- Team of experts -->
         <TeamOfExperts />
-        
+
         <!-- Trainning method -->
-         <TrainingMethod />
+        <TrainingMethod />
 
-         <!-- Student feedback -->
-          <StudentFeedback />
+        <!-- Student feedback -->
+        <StudentFeedback />
 
-          <!-- Featured Articles -->
-           <FeaturedArticles />
+        <!-- Featured Articles -->
+        <FeaturedArticles />
+
+        <!-- FAQ -->
+        <FAQ />
     </main>
 </template>
 

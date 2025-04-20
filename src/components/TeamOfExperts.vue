@@ -28,7 +28,7 @@ const team = [
             </div>
 
             <!-- Right team cards -->
-            <div class="relative lg:w-2/3 grid grid-cols-2 sm:grid-cols-3 gap-6 p-4 rounded-lg">
+            <div class="relative lg:w-2/3 grid grid-cols-2 sm:grid-cols-3 gap-6 py-4 rounded-lg">
                 <!-- Background div positioned in center of parent -->
                 <div class="absolute inset-0 bg-#FFFBF1 m-auto h-64 w-2000px"></div>
 

@@ -246,7 +246,8 @@ const handleFocusOut = (event: FocusEvent) => {
 </script>
 
 <template>
-    <div class="w-full px-6 md:px-[10%] lg:px-[20%] py-[60px] md:py-[80px]">
+    <!-- <div class="w-full px-6 md:px-[10%] lg:px-[20%] py-[60px] md:py-[80px]"> -->
+    <div class="max-w-6xl mx-auto mt-64px px-4 py-8 md:py-12">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-3xl font-semibold">Cảm nhận của học viên</h2>
             <div class="flex gap-2" ref="navButtonsRef" @focusin="handleNavButtonFocus" @focusout="handleNavButtonBlur">
@@ -283,7 +284,8 @@ const handleFocusOut = (event: FocusEvent) => {
                     <div class="bg-neutral-50 rounded-2xl shadow-md p-6 flex flex-col gap-4 h-full">
                         <div class="flex items-center justify-between gap-4 mb-2">
                             <div class="flex gap-2">
-                                <div class="w-16 h-16 relative bg-Background-Background-gray-3 rounded-[33px] shadow-[0px_4px_10px_0px_rgba(0,0,0,0.25)] border-[3px] border-white">
+                                <div
+                                    class="w-16 h-16 relative bg-Background-Background-gray-3 rounded-[33px] shadow-[0px_4px_10px_0px_rgba(0,0,0,0.25)] border-[3px] border-white">
                                     <img v-if="item.avatar" :src="item.avatar" alt="Avatar"
                                         class="w-full h-full rounded-33px object-cover">
                                 </div>

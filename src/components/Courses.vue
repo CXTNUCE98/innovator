@@ -236,7 +236,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div class="w-full px-6 md:px-10% lg:px-20% py-[60px] md:py-[80px]">
+    <!-- <div class="w-full px-6 md:px-10% lg:px-20% py-[60px] md:py-[80px]"> -->
+    <div class="max-w-6xl mx-auto mt-64px px-4 py-8 md:py-12">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-4xl font-semibold">Khoá học</h2>
             <div class="flex gap-4" ref="navButtonsRef" @focusin="handleNavButtonFocus" @focusout="handleNavButtonBlur">

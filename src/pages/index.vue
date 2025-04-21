@@ -18,7 +18,8 @@ onMounted(() => {
         <Distributor />
 
         <!-- Start your business journey today -->
-        <div class="flex justify-center px-4 md:px-10% lg:px-20%">
+        <!-- <div class="flex justify-center px-4 md:px-10% lg:px-20%"> -->
+        <div class="max-w-6xl mx-auto mt-64px px-4 py-8 md:py-12">
             <div class="py-16 md:py-16 lg:py-80px w-full">
                 <div class="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16">
                     <!-- Text content -->

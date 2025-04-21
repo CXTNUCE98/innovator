@@ -82,7 +82,8 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="w-full px-6 md:px-[10%] lg:px-[20%] py-[60px] md:py-[80px]">
+    <!-- <div class="w-full px-6 md:px-[10%] lg:px-[20%] py-[60px] md:py-[80px]"> -->
+    <div class="max-w-6xl mx-auto mt-64px px-4 py-8 md:py-12">
         <div class="container mx-auto max-w-6xl">
             <header class="mb-8">
                 <div class="flex flex-wrap justify-between">
@@ -97,17 +98,12 @@ onMounted(() => {
                 </p>
             </header>
 
-            <!-- <div class="flex justify-end mb-6">
-                
-            </div> -->
-
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Featured Article -->
                 <div class="featured-article bg-white rounded-lg overflow-hidden transform transition-transform duration-300 hover:-translate-y-1"
                     @mouseover="hoveredArticle = 'dropship'" @mouseleave="hoveredArticle = null">
                     <div class="relative h-56 md:h-64">
-                        <img :src="outstanding.img" alt="Featured Article"
-                            class="w-full h-full rounded-16px object-cover">
+                        <img :src="outstanding.img" alt="Featured Article" class="w-full h-full rounded-16px object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t rounded-16px from-black/50 to-transparent"></div>
                     </div>
                     <div>
@@ -126,9 +122,8 @@ onMounted(() => {
                     <template v-for="item in articleFeatures" :key="item.title">
                         <div class="article-card flex flex-col md:flex-row gap-4 bg-white rounded-lg overflow-hidden transform transition-transform duration-300 hover:-translate-y-1"
                             @mouseover="hoveredArticle = item.title" @mouseleave="hoveredArticle = null">
-                            <div class="md:w-1/3 h-40 overflow-hidden">
-                                <img :src="item.img" alt="Article image"
-                                    class="w-full h-full object-cover rounded-12px">
+                            <div class="md:w-2/5 h-40 overflow-hidden">
+                                <img :src="item.img" alt="Article image" class="w-full h-full object-cover rounded-12px">
                             </div>
                             <div class="flex-1">
                                 <div class="flex flex-col justify-between items-start mb-1">

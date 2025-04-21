@@ -72,14 +72,16 @@ const initAnimations = () => {
 </script>
 
 <template>
-    <div class="w-full px-6 md:px-10% lg:px-20% py-[60px] md:py-[80px]">
+    <!-- <div class="w-full px-6 md:px-10% lg:px-20% py-[60px] md:py-[80px]"> -->
+    <div class="max-w-6xl mx-auto mt-64px px-4 py-8 md:py-12">
         <h1 class="text-36px font-bold text-gray-800 mb-12">Phương pháp đào tạo</h1>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div v-for="(method, index) in methods" :key="index"
                 class="bg-white rounded-lg border-1 p-25px transform transition duration-300 ease-in-out hover:-translate-y-2 opacity-0"
                 :ref="el => { if (el) methodRefs[index] = el }">
-                <div class="text-50px font-bold text-right text-amber-500 mb-25px">{{ String(index + 1).padStart(2, '0') }}</div>
+                <div class="text-50px font-bold text-right text-amber-500 mb-25px">{{ String(index + 1).padStart(2, '0') }}
+                </div>
                 <h3 class="text-xl font-bold text-gray-800 mb-3">{{ method.title }}</h3>
                 <p class="text-gray-600 leading-relaxed">{{ method.description }}</p>
             </div>

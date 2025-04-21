@@ -10,7 +10,8 @@ const team = [
 </script>
 
 <template>
-    <div class="w-full px-6 md:px-10% lg:px-20% py-[60px] md:py-[80px] overflow-hidden">
+    <!-- <div class="w-full px-6 md:px-10% lg:px-20% py-[60px] md:py-[80px] overflow-hidden"> -->
+    <div class="max-w-6xl mx-auto mt-64px px-4 py-8 md:py-12 overflow-hidden">
         <div class="mx-auto flex flex-col lg:flex-row items-center gap-10">
             <!-- Left content -->
             <div class="lg:w-1/3 ">

@@ -30,7 +30,7 @@ const socialLinks = [
 </script>
 
 <template>
-    <footer class="bg-[#fbc04d] text-black py-10">
+    <footer class="px-6 md:px-[10%] lg:px-[20%] py-[60px] md:py-[80px] bg-[#fbc04d] text-black ">
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between gap-8">
                 <!-- Logo + Info -->

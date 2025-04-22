@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import Dropship from '@/public/course/dropship.png'
 import Amazon from '@/public/course/amazon.png'
@@ -7,15 +7,17 @@ import Teamwork from '@/public/course/teamwork.png'
 
 const baseCourses = [
     {
+        id: 'abc-b465-v21gh-1',
         name: 'Khóa học Dropship',
         sessions: 6,
         slot: 16,
         type: 'Cơ bản',
         rate: 5,
-        img: Dropship,
+        img: Dropship,        
     },
     {
-        name: 'Khóa học Amazon',
+        id: 'abc-b465-v21gh-2',
+        name: 'Content Creator',
         sessions: 6,
         slot: 16,
         type: 'Cơ bản',
@@ -23,7 +25,8 @@ const baseCourses = [
         img: Amazon,
     },
     {
-        name: 'Khóa học Livestream',
+        id: 'abc-b465-v21gh-3',
+        name: 'Khoá học Affiliate Marketing',
         sessions: 6,
         slot: 16,
         type: 'Nâng cao',
@@ -31,7 +34,71 @@ const baseCourses = [
         img: Livestream,
     },
     {
-        name: 'Khóa học Teamwork',
+        id: 'abc-b465-v21gh-4',
+        name: 'Khoá học Digital Marketing',
+        sessions: 6,
+        slot: 16,
+        type: 'Cơ bản',
+        rate: 5,
+        img: Teamwork,
+    },
+    {
+        id: 'abc-b465-v21gh-5',
+        name: 'Khoá học Kinh doanh Online',
+        sessions: 6,
+        slot: 16,
+        type: 'Cơ bản',
+        rate: 5,
+        img: Teamwork,
+    },
+    {
+        id: 'abc-b465-v21gh-6',
+        name: 'Khoá học Quản lý tài chính cá nhân',
+        sessions: 6,
+        slot: 16,
+        type: 'Cơ bản',
+        rate: 5,
+        img: Teamwork,
+    },
+    {
+        id: 'abc-b465-v21gh-7',
+        name: 'Khoá học Thiết kế đồ họa',
+        sessions: 6,
+        slot: 16,
+        type: 'Cơ bản',
+        rate: 5,
+        img: Teamwork,
+    },
+    {
+        id: 'abc-b465-v21gh-8',
+        name: 'Khoá học Quản lý thời gian',
+        sessions: 6,
+        slot: 16,
+        type: 'Cơ bản',
+        rate: 5,
+        img: Teamwork,
+    },
+    {
+        id: 'abc-b465-v21gh-9',
+        name: 'Khoá học Kỹ năng bán hàng',
+        sessions: 6,
+        slot: 16,
+        type: 'Cơ bản',
+        rate: 5,
+        img: Teamwork,
+    },
+    {
+        id: 'abc-b465-v21gh-10',
+        name: 'Khoá học Amazon FBA',
+        sessions: 6,
+        slot: 16,
+        type: 'Cơ bản',
+        rate: 5,
+        img: Teamwork,
+    },
+    {
+        id: 'abc-b465-v21gh-11',
+        name: 'Khoá học Livestream bán hàng',
         sessions: 6,
         slot: 16,
         type: 'Cơ bản',
@@ -233,6 +300,12 @@ onBeforeUnmount(() => {
     window.removeEventListener('blur', stopAutoplay)
     window.removeEventListener('focus', startAutoplay)
 })
+
+const router = useRouter()
+
+function goToCourseDetail(id: string) {
+    router.push(`/course/${id}`)
+}
 </script>
 
 <template>
@@ -264,18 +337,19 @@ onBeforeUnmount(() => {
 
         <div class="overflow-hidden" ref="carouselRef" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave"
             @focusin="handleFocusIn" @focusout="handleFocusOut">
-            <div class="flex py-2 gap-24px" :class="isTransitioning ? 'transition-transform duration-500 ease-in-out' : ''" :style="{
-                transform: `translateX(-${currentIndex * (100 / extendedCourses.length)}%)`,
-                width: `${(extendedCourses.length / visibleCourses) * 100}%`,
-            }" @transitionend="handleTransitionEnd">
+            <div class="flex py-2 gap-24px" :class="isTransitioning ? 'transition-transform duration-500 ease-in-out' : ''"
+                :style="{
+                    transform: `translateX(-${currentIndex * (100 / extendedCourses.length)}%)`,
+                    width: `${(extendedCourses.length / visibleCourses) * 100}%`,
+                }" @transitionend="handleTransitionEnd">
                 <div v-for="(item, index) in extendedCourses" :key="index" class="box-border"
                     :style="{ width: `${100 / extendedCourses.length}%`, minWidth: '250px' }">
                     <div class="bg-neutral-50 rounded-2xl shadow-md p-4 flex flex-col gap-4 h-full">
                         <div class="h-48 rounded-xl overflow-hidden">
                             <img :src="item.img" alt="" class="w-full h-full object-cover" />
                         </div>
-                        <div class="text-lg font-semibold">{{ item.name }}</div>
-                        <div class="flex flex-wrap gap-4 sm:gap-6 text-sm text-gray-600">
+                        <div @click="goToCourseDetail(item.id)" class="text-16px font-semibold cursor-pointer h-48px">{{ item.name }}</div>
+                        <div class="flex flex-wrap gap-2 sm:gap-4 text-13px text-gray-600">
                             <div class="flex items-center gap-1"><i class="fa-solid fa-book"></i> {{ item.sessions }} buổi
                             </div>
                             <div class="flex items-center gap-1"><i class="fa-solid fa-user"></i> {{ item.slot }} chỗ</div>

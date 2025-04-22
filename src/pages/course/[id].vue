@@ -5,31 +5,13 @@ import Telegram from "@/public/telegram.png"
 import Twitter from "@/public/twitter.png"
 
 const route = useRoute()
-console.log('route: ', route)
+const idCourse = computed(() => {
+    return route?.params.id as string
+})
 
-// Data
-const reasons = [
-    'Chi phí khởi nghiệp thấp',
-    'Thị trường toàn cầu',
-    'Thu nhập không giới hạn',
-    'Linh hoạt về địa điểm',
-    'Dễ dàng mở rộng kinh doanh',
-    'Được hỗ trợ từ chuyên gia'
-];
+const courseDetail = ref(courses?.find((el) => el.id === idCourse.value))
 
-const targetAudience = [
-    'Freelancer',
-    'Sinh viên',
-    'Mẹ bỉm sữa',
-    'Người đi làm'
-];
-
-const benefits = [
-    'Đội ngũ giảng viên giàu kinh nghiệm và chia sẻ thành công của họ',
-    'Tham gia vào các bài tập và dự án thực tế để áp dụng kiến thức',
-    'Tham gia cộng đồng học viên và được hỗ trợ từ các chuyên gia ngay cả khi hoàn thành khoá học'
-];
-
+// Social sharing data
 const socialSharing = [
     { name: 'LinkedIn', icon: Whatsapp },
     { name: 'Facebook', icon: Facebook },
@@ -37,53 +19,9 @@ const socialSharing = [
     { name: 'Twitter', icon: Twitter },
 ];
 
-const courseModules = [
-    {
-        title: 'Giới thiệu về Dropshipping',
-        lessons: 2,
-        content: [
-            'Hiểu rõ về mô hình dropshipping và lý do tại sao nó lại thu hút nhiều người',
-            'Cách hoạt động và những bước cơ bản để bắt đầu'
-        ]
-    },
-    {
-        title: 'Lựa chọn ngành sản phẩm',
-        lessons: 2,
-        content: [
-            'Cách nghiên cứu thị trường để tìm ra những sản phẩm tiềm năng',
-            'Phân tích đối thủ cạnh tranh và xu hướng của thị trường'
-        ]
-    },
-    {
-        title: 'Thiết lập cửa hàng trực tuyến',
-        lessons: 2,
-        content: []
-    },
-    {
-        title: 'Quản lý sản phẩm và nhà cung cấp',
-        lessons: 2,
-        content: []
-    },
-    {
-        title: 'Chiến lược tiếp thị và bán hàng',
-        lessons: 2,
-        content: []
-    },
-    {
-        title: 'Quản lý vận hành và hậu cần',
-        lessons: 2,
-        content: []
-    },
-    {
-        title: 'Phân tích hiệu quả kinh doanh',
-        lessons: 2,
-        content: []
-    }
-];
-
 // Reactive state
-const activeModules = ref(courseModules.map(() => false));
-activeModules.value[0] = true; // First module open by default
+const activeModules = ref(courseDetail.value?.courseModules.map(() => false));
+activeModules.value[0] = true;
 
 const countdown = ref({
     days: '01',
@@ -95,6 +33,10 @@ const countdown = ref({
 const toggleModule = (index: number) => {
     activeModules.value[index] = !activeModules.value[index];
 };
+
+function fullyExpanded() {
+    courseDetail.value?.courseModules.map((_, index) => activeModules.value[index] = true)
+}
 
 // Animations on scroll
 onMounted(() => {
@@ -144,7 +86,7 @@ onMounted(() => {
         clearInterval(timerInterval);
     });
 
-    startCountdown('23/04/2025')
+    startCountdown(courseDetail.value?.promotions?.dateDiscount)
 });
 
 const hours = ref()
@@ -168,14 +110,36 @@ function startCountdown(targetDateStr) {
         minutes.value = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         seconds.value = Math.floor((diff % (1000 * 60)) / 1000);
 
-        console.log(
-            `Countdown to ${targetDate.toLocaleDateString()} → ${String(hours).padStart(2, "0")} : ${String(minutes).padStart(2, "0")} : ${String(seconds).padStart(2, "0")}`
-        );
-
         return { hours, minutes, seconds, nextTarget: targetDate };
     }
 
     setInterval(updateCountdown, 1000);
+}
+
+
+const numberShowFeedback = ref(2)
+const isAnimating = ref(false)
+
+// Modified function to show more feedbacks with animation
+function handleShowMore() {
+    if (isAnimating.value) return; // Prevent multiple clicks during animation
+
+    isAnimating.value = true;
+
+    // Add 2 more feedbacks with animation
+    setTimeout(() => {
+        numberShowFeedback.value += 2;
+        isAnimating.value = false;
+    }, 500); // Increased delay for smoother animation
+}
+
+// Computed property to get the visible feedbacks
+const showFeedbacks = computed(() => {
+    return courseDetail.value?.feedbacks.slice(0, numberShowFeedback.value);
+})
+
+function formatNumberWithDots(number: string) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 </script>
 
@@ -187,28 +151,26 @@ function startCountdown(targetDateStr) {
         <div class="flex lg:flex-row flex-col-reverse gap-8 ">
             <!-- Left Content Section -->
             <div class="space-y-8">
-                <h1 class="text-3xl md:text-4xl font-bold text-gray-800 transition-all duration-300 hover:text-indigo-600">
-                    Khoá học Dropship
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-800 transition-all duration-300">
+                    {{ courseDetail?.title }}
                 </h1>
 
                 <p class="text-gray-600 leading-relaxed">
-                    Khoá học Dropship tại Innovator Academy được thiết kế để giúp bạn bước chân vào thế giới kinh doanh trực
-                    tuyến một cách dễ dàng và hiệu quả. Với phương pháp giảng dạy sinh động, chúng tôi sẽ dẫn dắt bạn từ
-                    những bước đầu tiên đến khi bạn có thể tự tin quản lý một cửa hàng dropshipping thành công.
+                    {{ courseDetail?.subTitle }}
                 </p>
 
                 <section>
-                    <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-4">Tại sao nên học kinh doanh Dropship
+                    <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-4">{{ courseDetail?.nameModifier }}
                     </h2>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div v-for="(reason, index) in reasons" :key="`reason-${index}`"
+                        <div v-for="(rea, index) in courseDetail?.reason" :key="`rea-${index}`"
                             class="flex items-start space-x-2 group">
                             <div
-                                class="flex-shrink-0 w-5 h-5 rounded-full bg-yellow-400 flex items-center justify-center mt-1 transform transition-all group-hover:rotate-12">
-                                <CheckIcon class="w-3 h-3 text-white" />
+                                class="flex-shrink-0 w-6 h-6 rounded-full bg-#FFFBF1 flex items-center justify-center mt-1 transform transition-all group-hover:rotate-12">
+                                <i class='bx bx-check text-18px' style="color:#FCAF17"></i>
                             </div>
-                            <span class="text-gray-700 group-hover:text-indigo-600 transition-colors">{{ reason }}</span>
+                            <span class="text-gray-700  transition-colors">{{ rea }}</span>
                         </div>
                     </div>
                 </section>
@@ -217,13 +179,13 @@ function startCountdown(targetDateStr) {
                     <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-4">Dành cho ai?</h2>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div v-for="(audience, index) in targetAudience" :key="`audience-${index}`"
+                        <div v-for="(audience, index) in courseDetail?.targetAudience" :key="`audience-${index}`"
                             class="flex items-start space-x-2 group">
                             <div
-                                class="flex-shrink-0 w-5 h-5 rounded-full bg-yellow-400 flex items-center justify-center mt-1 transform transition-all group-hover:rotate-12">
-                                <CheckIcon class="w-3 h-3 text-white" />
+                                class="flex-shrink-0 w-6 h-6 rounded-full bg-#FFFBF1 flex items-center justify-center mt-1 transform transition-all group-hover:rotate-12">
+                                <i class='bx bx-check text-18px' style="color:#FCAF17"></i>
                             </div>
-                            <span class="text-gray-700 group-hover:text-indigo-600 transition-colors">{{ audience }}</span>
+                            <span class="text-gray-700  transition-colors">{{ audience }}</span>
                         </div>
                     </div>
                 </section>
@@ -232,13 +194,13 @@ function startCountdown(targetDateStr) {
                     <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-4">Được gì khi tham gia khoá học?</h2>
 
                     <div class="space-y-4">
-                        <div v-for="(benefit, index) in benefits" :key="`benefit-${index}`"
+                        <div v-for="(benefit, index) in courseDetail?.benefit" :key="`benefit-${index}`"
                             class="flex items-start space-x-2 group">
                             <div
-                                class="flex-shrink-0 w-5 h-5 rounded-full bg-yellow-400 flex items-center justify-center mt-1 transform transition-all group-hover:rotate-12">
-                                <CheckIcon class="w-3 h-3 text-white" />
+                                class="flex-shrink-0 w-6 h-6 rounded-full bg-#FFFBF1 flex items-center justify-center mt-1 transform transition-all group-hover:rotate-12">
+                                <i class='bx bx-check text-18px' style="color:#FCAF17"></i>
                             </div>
-                            <span class="text-gray-700 group-hover:text-indigo-600 transition-colors">{{ benefit }}</span>
+                            <span class="text-gray-700  transition-colors">{{ benefit }}</span>
                         </div>
                     </div>
                 </section>
@@ -247,268 +209,112 @@ function startCountdown(targetDateStr) {
                 <section class="mt-12 md:mt-16">
                     <h2 class="text-2xl font-semibold text-gray-800 flex items-center justify-between">
                         Nội dung khoá học
-                        <button class="text-yellow-500 hover:text-yellow-600 text-sm flex items-center space-x-1">
+                        <button @click="fullyExpanded"
+                            class="text-#FCAF17 hover:text-yellow-400 text-sm flex items-center space-x-1">
                             <span>Mở rộng toàn bộ</span>
-                            <ChevronDownIcon class="w-4 h-4" />
                         </button>
                     </h2>
 
-                    <div class="mt-6 space-y-4">
-                        <div v-for="(module, index) in courseModules" :key="`module-${index}`"
-                            class="border border-gray-200 rounded-lg overflow-hidden">
-                            <div class="bg-gray-50 p-4 flex items-center justify-between cursor-pointer hover:bg-gray-100 transition-colors"
+                    <div class="my-6 space-y-4">
+                        <div v-for="(module, index) in courseDetail?.courseModules" :key="`module-${index}`"
+                            class="border border-gray-200 rounded-lg overflow-hidden module-container">
+                            <div class="bg-gray-50 p-4 flex items-start flex-col md:(flex-row justify-between items-center) cursor-pointer hover:bg-gray-100 transition-colors"
                                 @click="toggleModule(index)">
-                                <div class="flex items-center space-x-3">
-                                    <div
-                                        class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-medium">
-                                        {{ index + 1 }}
+                                <div class="flex items-center space-x-2 font-medium">
+                                    <div class="icon-container w-6 h-6 flex items-center justify-center overflow-hidden">
+                                        <i :class="activeModules[index] ? 'bx bx-minus rotate-in' : 'bx bx-plus rotate-in'"
+                                            class='text-24px transition-all duration-300' style='color:#FCAF17'></i>
                                     </div>
+                                    <div>{{ index + 1 }}.</div>
                                     <h3 class="font-medium">{{ module.title }}</h3>
                                 </div>
 
-                                <div class="flex items-center space-x-2">
+                                <div class="flex items-center space-x-2 ml-8 md:ml-0">
                                     <span class="text-sm text-gray-500">{{ module.lessons }} bài học</span>
-                                    <ChevronDownIcon
-                                        :class="['w-5 h-5 transition-transform', { 'transform rotate-180': activeModules[index] }]" />
                                 </div>
                             </div>
 
-                            <div v-show="activeModules[index]" class="p-4 border-t border-gray-200 space-y-3">
+                            <div :class="[
+                                'module-content border-t border-gray-200 space-y-3 transition-all duration-500 ease-in-out',
+                                activeModules[index] ? 'module-content-active' : 'module-content-inactive'
+                            ]">
                                 <div v-for="(lesson, lIndex) in module.content" :key="`lesson-${index}-${lIndex}`"
-                                    class="flex items-start space-x-2 py-2 group">
+                                    class="flex items-start space-x-2 py-2 group lesson-item">
                                     <div
-                                        class="flex-shrink-0 w-5 h-5 rounded-full bg-yellow-400 flex items-center justify-center mt-1">
-                                        <div class="w-2 h-2 bg-white rounded-full"></div>
+                                        class="flex-shrink-0 w-5 h-5 rounded-full bg-#FCAF17 flex items-center justify-center mt-1 transform transition-all group-hover:rotate-12">
+                                        <i class='bx bx-check' style="color:#FFFFFF"></i>
                                     </div>
-                                    <span class="text-gray-700 group-hover:text-indigo-600 transition-colors">{{ lesson
+                                    <span class="text-gray-700  transition-colors">{{ lesson
                                     }}</span>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
-                    <div
-                        class="self-stretch p-6 bg-Background-Background-gray rounded-2xl inline-flex flex-col justify-start items-center gap-10">
+                    <div class="self-stretch p-6 bg-#FAFAFA rounded-2xl flex flex-col justify-start items-center gap-10">
                         <div
-                            class="self-stretch pb-6 border-b border-Border-Border-default flex flex-col justify-start items-start gap-4">
-                            <div
-                                class="justify-start text-Text&Icon-Text-title text-2xl font-bold font-['Inter'] leading-loose">
+                            class="self-stretch pb-4 border-b border-Border-Border-default flex flex-col justify-start items-start gap-4">
+                            <div class="justify-start text-Text&Icon-Text-title text-2xl font-bold font-['Inter'] ">
                                 Đánh giá </div>
-                            <div class="inline-flex justify-start items-center gap-6">
-                                <div data-rate="5 star" data-size="XL" class="flex justify-start items-start gap-2">
-                                    <div data-badge="false" data-size="32x32"
-                                        class="inline-flex flex-col justify-start items-start">
-                                        <div class="w-8 h-8 relative rounded-lg">
-                                            <div class="w-8 h-8 left-0 top-0 absolute overflow-hidden">
-                                                <div class="w-7 h-6 left-[2.67px] top-[3.34px] absolute bg-Warning-Warning">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div data-badge="false" data-size="32x32"
-                                        class="inline-flex flex-col justify-start items-start">
-                                        <div class="w-8 h-8 relative rounded-lg">
-                                            <div class="w-8 h-8 left-0 top-0 absolute overflow-hidden">
-                                                <div class="w-7 h-6 left-[2.67px] top-[3.34px] absolute bg-Warning-Warning">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div data-badge="false" data-size="32x32"
-                                        class="inline-flex flex-col justify-start items-start">
-                                        <div class="w-8 h-8 relative rounded-lg">
-                                            <div class="w-8 h-8 left-0 top-0 absolute overflow-hidden">
-                                                <div class="w-7 h-6 left-[2.67px] top-[3.34px] absolute bg-Warning-Warning">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div data-badge="false" data-size="32x32"
-                                        class="inline-flex flex-col justify-start items-start">
-                                        <div class="w-8 h-8 relative rounded-lg">
-                                            <div class="w-8 h-8 left-0 top-0 absolute overflow-hidden">
-                                                <div class="w-7 h-6 left-[2.67px] top-[3.34px] absolute bg-Warning-Warning">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div data-badge="false" data-size="32x32"
-                                        class="inline-flex flex-col justify-start items-start">
-                                        <div class="w-8 h-8 relative rounded-lg">
-                                            <div class="w-8 h-8 left-0 top-0 absolute overflow-hidden">
-                                                <div class="w-7 h-6 left-[2.67px] top-[3.34px] absolute bg-Warning-Warning">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="flex justify-start items-center gap-8px">
+                                <i class='bx bxs-star text-20px' style='color:#FF9100'></i>
+                                <i class='bx bxs-star text-20px' style='color:#FF9100'></i>
+                                <i class='bx bxs-star text-20px' style='color:#FF9100'></i>
+                                <i class='bx bxs-star text-20px' style='color:#FF9100'></i>
+                                <i class='bx bxs-star text-20px' style='color:#FF9100'></i>
                                 <div class="flex justify-start items-center gap-4">
-                                    <div
-                                        class="justify-start text-Text&Icon-Text-label text-xl font-bold font-['Inter'] leading-7">
+                                    <div class="justify-start text-#404040 text-xl font-bold font-['Inter'] leading-7">
                                         5 .0</div>
                                     <div
-                                        class="justify-start text-Text&Icon-Text-title text-sm font-normal font-['Inter'] leading-tight">
-                                        20 lượt đánh giá</div>
+                                        class="justify-start text-#2A2A2A text-sm font-normal font-['Inter'] leading-tight">
+                                        {{ courseDetail?.feedbacks.length }} lượt đánh giá</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="self-stretch flex flex-col justify-start items-start gap-6">
-                            <div class="self-stretch inline-flex justify-start items-start gap-4">
-                                <div class="flex-1 flex justify-start items-center gap-4">
-                                    <div
-                                        class="w-16 h-16 relative bg-Background-Background-gray-3 rounded-[33px] border-[3px] border-white">
-                                    </div>
-                                    <div class="inline-flex flex-col justify-start items-start gap-2">
+                        <!-- Feedback items with transition group for smooth animation -->
+                        <TransitionGroup name="feedback-list" tag="div" class="w-full feedback-container">
+                            <div v-for="item in showFeedbacks" :key="item.name"
+                                class="self-stretch flex flex-col justify-start items-start gap-6 feedback-item">
+                                <div class="self-stretch inline-flex justify-start items-start gap-4">
+                                    <div class="flex-1 flex justify-start items-center gap-4">
                                         <div
-                                            class="w-36 h-6 justify-center text-Text&Icon-Text-label text-xl font-bold font-['Inter'] leading-7">
-                                            Huy Đặng</div>
-                                        <div class="inline-flex justify-start items-center gap-4">
-                                            <div data-rate="5 star" data-size="S"
-                                                class="flex justify-start items-start gap-1">
-                                                <div data-badge="false" data-size="16x16"
-                                                    class="flex justify-center items-center gap-2">
-                                                    <div class="w-4 h-4 relative rounded-lg">
-                                                        <div class="w-4 h-4 left-0 top-0 absolute overflow-hidden">
-                                                            <div
-                                                                class="w-3.5 h-3 left-[1.33px] top-[1.67px] absolute bg-Warning-Warning">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div data-badge="false" data-size="16x16"
-                                                    class="flex justify-center items-center gap-2">
-                                                    <div class="w-4 h-4 relative rounded-lg">
-                                                        <div class="w-4 h-4 left-0 top-0 absolute overflow-hidden">
-                                                            <div
-                                                                class="w-3.5 h-3 left-[1.33px] top-[1.67px] absolute bg-Warning-Warning">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div data-badge="false" data-size="16x16"
-                                                    class="flex justify-center items-center gap-2">
-                                                    <div class="w-4 h-4 relative rounded-lg">
-                                                        <div class="w-4 h-4 left-0 top-0 absolute overflow-hidden">
-                                                            <div
-                                                                class="w-3.5 h-3 left-[1.33px] top-[1.67px] absolute bg-Warning-Warning">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div data-badge="false" data-size="16x16"
-                                                    class="flex justify-center items-center gap-2">
-                                                    <div class="w-4 h-4 relative rounded-lg">
-                                                        <div class="w-4 h-4 left-0 top-0 absolute overflow-hidden">
-                                                            <div
-                                                                class="w-3.5 h-3 left-[1.33px] top-[1.67px] absolute bg-Warning-Warning">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div data-badge="false" data-size="16x16"
-                                                    class="flex justify-center items-center gap-2">
-                                                    <div class="w-4 h-4 relative rounded-lg">
-                                                        <div class="w-4 h-4 left-0 top-0 absolute overflow-hidden">
-                                                            <div
-                                                                class="w-3.5 h-3 left-[1.33px] top-[1.67px] absolute bg-Warning-Warning">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            class="w-16 h-16 relative rounded-33px shadow-[0px_4px_10px_0px_rgba(0,0,0,0.25)] border-[3px] border-white">
+                                            <img :src="item.avatar" alt="Avatar"
+                                                class="w-full h-full rounded-33px object-cover">
+                                        </div>
+                                        <div class="flex flex-col justify-start items-start gap-2">
+                                            <div
+                                                class="w-full h-6 justify-center text-18px font-bold font-['Inter'] leading-7">
+                                                {{ item.name }}</div>
+                                            <div class="inline-flex justify-start items-center gap-4px">
+                                                <i class='bx bxs-star text-16px' style='color:#FF9100'></i>
+                                                <i class='bx bxs-star text-16px' style='color:#FF9100'></i>
+                                                <i class='bx bxs-star text-16px' style='color:#FF9100'></i>
+                                                <i class='bx bxs-star text-16px' style='color:#FF9100'></i>
+                                                <i class='bx bxs-star text-16px' style='color:#FF9100'></i>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div
-                                    class="justify-center text-Text&Icon-Text-label text-sm font-normal font-['Inter'] leading-tight">
-                                    24/06/2024</div>
-                            </div>
-                            <div
-                                class="w-[610px] justify-center text-Text&Icon-Text-label text-base font-normal font-['Inter'] leading-normal">
-                                “Khoá học rất hữu ích và dễ hiểu. Tôi đã học được rất nhiều kiến thức mới</div>
-                        </div>
-                        <div class="self-stretch flex flex-col justify-start items-start gap-6">
-                            <div class="self-stretch inline-flex justify-start items-start gap-4">
-                                <div class="flex-1 flex justify-start items-center gap-4">
                                     <div
-                                        class="w-16 h-16 relative bg-Background-Background-gray-3 rounded-[33px] border-[3px] border-white">
-                                    </div>
-                                    <div class="inline-flex flex-col justify-start items-start gap-2">
-                                        <div
-                                            class="w-36 h-6 justify-center text-Text&Icon-Text-label text-xl font-bold font-['Inter'] leading-7">
-                                            Huy Đặng</div>
-                                        <div class="inline-flex justify-start items-center gap-4">
-                                            <div data-rate="5 star" data-size="S"
-                                                class="flex justify-start items-start gap-1">
-                                                <div data-badge="false" data-size="16x16"
-                                                    class="flex justify-center items-center gap-2">
-                                                    <div class="w-4 h-4 relative rounded-lg">
-                                                        <div class="w-4 h-4 left-0 top-0 absolute overflow-hidden">
-                                                            <div
-                                                                class="w-3.5 h-3 left-[1.33px] top-[1.67px] absolute bg-Warning-Warning">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div data-badge="false" data-size="16x16"
-                                                    class="flex justify-center items-center gap-2">
-                                                    <div class="w-4 h-4 relative rounded-lg">
-                                                        <div class="w-4 h-4 left-0 top-0 absolute overflow-hidden">
-                                                            <div
-                                                                class="w-3.5 h-3 left-[1.33px] top-[1.67px] absolute bg-Warning-Warning">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div data-badge="false" data-size="16x16"
-                                                    class="flex justify-center items-center gap-2">
-                                                    <div class="w-4 h-4 relative rounded-lg">
-                                                        <div class="w-4 h-4 left-0 top-0 absolute overflow-hidden">
-                                                            <div
-                                                                class="w-3.5 h-3 left-[1.33px] top-[1.67px] absolute bg-Warning-Warning">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div data-badge="false" data-size="16x16"
-                                                    class="flex justify-center items-center gap-2">
-                                                    <div class="w-4 h-4 relative rounded-lg">
-                                                        <div class="w-4 h-4 left-0 top-0 absolute overflow-hidden">
-                                                            <div
-                                                                class="w-3.5 h-3 left-[1.33px] top-[1.67px] absolute bg-Warning-Warning">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div data-badge="false" data-size="16x16"
-                                                    class="flex justify-center items-center gap-2">
-                                                    <div class="w-4 h-4 relative rounded-lg">
-                                                        <div class="w-4 h-4 left-0 top-0 absolute overflow-hidden">
-                                                            <div
-                                                                class="w-3.5 h-3 left-[1.33px] top-[1.67px] absolute bg-Warning-Warning">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        class="justify-center text-Text&Icon-Text-label text-sm font-normal font-['Inter'] leading-tight">
+                                        {{ item.date }}</div>
                                 </div>
                                 <div
-                                    class="justify-center text-Text&Icon-Text-label text-sm font-normal font-['Inter'] leading-tight">
-                                    24/06/2024</div>
+                                    class="justify-center text-Text&Icon-Text-label text-base font-normal font-['Inter'] leading-normal">
+                                    {{ item.comment }}</div>
                             </div>
-                            <div
-                                class="w-[567px] justify-center text-Text&Icon-Text-label text-base font-normal font-['Inter'] leading-normal">
-                                “Khoá học rất hữu ích và dễ hiểu. Tôi đã học được rất nhiều kiến thức mới</div>
-                        </div>
+                        </TransitionGroup>
+
+                        <!-- Xem thêm button with animation -->
                         <div data-circle-button="No" data-left-icon="false" data-level="Primary" data-right-icon="true"
                             data-size="48px" data-status="Active" data-style="Text" data-text="Yes"
-                            class="px-6 py-3 rounded-lg inline-flex justify-center items-center gap-2">
-                            <div
-                                class="text-center justify-start text-Primary-Primary text-base font-medium font-['Inter'] leading-normal">
-                                Xem thêm</div>
+                            class="px-6 py-3 rounded-lg inline-flex justify-center items-center gap-2 show-more-button"
+                            v-if="showFeedbacks.length < courseDetail?.feedbacks?.length">
+                            <div @click="handleShowMore"
+                                class="flex items-center cursor-pointer text-center justify-start text-#FCAF17 text-base font-medium font-['Inter'] hover:translate-y-1 leading-normal transition-all duration-300 "
+                                :class="{ 'opacity-50 pointer-events-none': isAnimating, 'animate-pulse': isAnimating }">
+                                Xem thêm <i class='bx bx-chevron-down text-20px transition-transform duration-300 '
+                                    style='color:#FCAF17'></i> </div>
                             <div class="w-6 h-6 relative">
                                 <div class="w-4 h-2 left-[4.25px] top-[7.75px] absolute bg-Primary-Primary"></div>
                             </div>
@@ -518,7 +324,7 @@ function startCountdown(targetDateStr) {
             </div>
 
             <!-- Right Image & Course Details Section -->
-            <div class="flex flex-col space-y-6 ">
+            <div class="flex flex-col space-y-6 max-w-auto md:max-w-350px">
                 <div class="rounded-lg overflow-hidden bg-neutral-50 shadow-lg transform transition-all ">
                     <div class="rounded-16px">
                         <img src="https://www.globalcareercounsellor.com/blog/wp-content/uploads/2018/05/Online-Career-Counselling-course.jpg"
@@ -533,7 +339,6 @@ function startCountdown(targetDateStr) {
                                 <div class="flex-1 inline-flex flex-col justify-center items-start gap-1">
                                     <div class="inline-flex justify-start items-center gap-1">
                                         <div class="w-5 h-5 relative overflow-hidden">
-                                            <!-- <div class="w-2.5 h-4 left-[5px] top-[1.67px] absolute bg-Yellow-Yellow"></div> -->
                                             <img src="../../public/thunder.png" alt="">
                                         </div>
                                         <div
@@ -543,17 +348,19 @@ function startCountdown(targetDateStr) {
                                     <div class="inline-flex justify-start items-center gap-1.5">
                                         <div
                                             class="justify-start text-white text-xl font-medium font-['Inter'] leading-loose tracking-tight">
-                                            11.290.000đ</div>
+                                            {{ formatNumberWithDots(courseDetail?.promotions?.price * ((100 -
+                                                courseDetail?.promotions?.percent) / 100)) }}đ
+                                        </div>
                                     </div>
                                     <div class="inline-flex justify-start items-center gap-1">
                                         <div
                                             class="opacity-50 justify-start text-white text-xs font-medium font-['Inter'] line-through leading-none">
-                                            15.720.000đ</div>
+                                            {{ formatNumberWithDots(courseDetail?.promotions?.price) }}đ</div>
                                         <div
                                             class="px-1 py-0.5 bg-rose-50 rounded-md flex justify-center items-center gap-2.5">
                                             <div
                                                 class="justify-start text-red-600 text-xs font-medium font-['Inter'] leading-none tracking-tight">
-                                                -25%</div>
+                                                -{{ courseDetail?.promotions?.percent }}%</div>
                                         </div>
                                     </div>
                                 </div>
@@ -566,7 +373,7 @@ function startCountdown(targetDateStr) {
                                             class="px-2.5 py-1 bg-white/30 rounded-lg flex justify-center items-end gap-2.5 overflow-hidden">
                                             <div
                                                 class="justify-start text-white text-base font-medium font-['Inter'] leading-normal">
-                                                {{ hours }} </div>
+                                                {{ hours > 9 ? hours : `0${hours}` }} </div>
                                         </div>
                                         <div class="inline-flex flex-col justify-start items-start gap-1">
                                             <div class="w-1 h-1 bg-white rounded-3xl"></div>
@@ -576,7 +383,7 @@ function startCountdown(targetDateStr) {
                                             class="px-2.5 py-1 bg-white/30 rounded-lg flex justify-center items-end gap-2.5 overflow-hidden">
                                             <div
                                                 class="justify-start text-white text-base font-medium font-['Inter'] leading-normal">
-                                                {{ minutes }}</div>
+                                                {{ minutes > 9 ? minutes : `0${minutes}` }}</div>
                                         </div>
                                         <div class="inline-flex flex-col justify-start items-start gap-1">
                                             <div class="w-1 h-1 bg-white rounded-3xl"></div>
@@ -586,13 +393,13 @@ function startCountdown(targetDateStr) {
                                             class="px-2.5 py-1 bg-white/30 rounded-lg flex justify-center items-end gap-2.5 overflow-hidden">
                                             <div
                                                 class="justify-start text-white text-base font-medium font-['Inter'] leading-normal">
-                                                {{ seconds }}</div>
+                                                {{ seconds > 9 ? seconds : `0${seconds}` }}</div>
                                         </div>
                                     </div>
                                     <div class="self-stretch inline-flex justify-end items-center gap-2">
                                         <div
                                             class="justify-start text-white text-xs font-normal font-['Inter'] leading-none tracking-tight">
-                                            12 người đã đặt</div>
+                                            {{ courseDetail?.promotions?.preOder }} người đã đặt</div>
                                     </div>
                                 </div>
                             </div>
@@ -603,22 +410,23 @@ function startCountdown(targetDateStr) {
 
                             <div class="flex items-center space-x-2 text-gray-600">
                                 <i class='bx bxs-book-bookmark'></i>
-                                <span>32 buổi: 16</span>
+                                <span>Số buổi: {{ courseDetail?.promotions?.numberSessions }}</span>
                             </div>
 
                             <div class="flex items-center space-x-2 text-gray-600">
                                 <i class='bx bxs-user'></i>
-                                <span>Số lượng hs: 16/20</span>
+                                <span>Số lượng hs:
+                                    {{ courseDetail?.promotions?.preOder }}/{{ courseDetail?.promotions?.limit }}</span>
                             </div>
 
                             <div class="flex items-center space-x-2 text-gray-600">
                                 <i class='bx bxs-calendar'></i>
-                                <span>Thời gian: Cả tuần</span>
+                                <span>Thời gian: {{ courseDetail?.promotions?.time }}</span>
                             </div>
 
                             <div class="flex items-center space-x-2 text-gray-600">
                                 <i class='bx bxs-video'></i>
-                                <span>Hình thức: Online</span>
+                                <span>Hình thức: {{ courseDetail?.promotions?.learningStyle }}</span>
                             </div>
 
                             <button
@@ -641,11 +449,10 @@ function startCountdown(targetDateStr) {
                 </div>
             </div>
         </div>
-
     </main>
 </template>
 
-<style>
+<style scoped>
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -660,5 +467,113 @@ function startCountdown(targetDateStr) {
 
 .animate-fade-in {
     animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Icon rotation animations */
+@keyframes rotateIn {
+    0% {
+        transform: rotate(-180deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: rotate(0);
+        opacity: 1;
+    }
+}
+
+.rotate-in {
+    animation: rotateIn 0.3s ease-out forwards;
+}
+
+/* Module content animations */
+.module-content {
+    overflow: hidden;
+}
+
+.module-content-active {
+    max-height: 1000px;
+    padding: 1rem;
+    opacity: 1;
+}
+
+.module-content-inactive {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+}
+
+/* Make the icon container maintain its size during animation */
+.icon-container {
+    position: relative;
+}
+
+/* Lesson item animations */
+.lesson-item {
+    transform: translateX(0);
+    transition: transform 0.3s ease-out;
+}
+
+.lesson-item:hover {
+    transform: translateX(5px);
+}
+
+/* Transitions for feedback items */
+.feedback-list-enter-active {
+    transition: all 0.6s ease-out;
+}
+
+.feedback-list-leave-active {
+    transition: all 0.3s ease-in;
+    position: absolute;
+}
+
+.feedback-list-enter-from {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.feedback-list-leave-to {
+    opacity: 0;
+    transform: translateY(-30px);
+}
+
+.feedback-item {
+    margin-bottom: 2rem;
+    transition: all 0.4s ease;
+    transform: scale(1);
+}
+
+.feedback-container {
+    position: relative;
+    width: 100%;
+}
+
+/* Show more button animations */
+.show-more-button {
+    transition: all 0.3s ease;
+}
+
+.show-more-button:hover {
+    transform: translateY(-2px);
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.animate-pulse {
+    animation: pulse 1.5s infinite;
 }
 </style>

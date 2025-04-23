@@ -1,11 +1,8 @@
 <script lang="ts" setup>
 
-console.log('articles: ', articles.value?.length);
-
-
 // Pagination state
 const currentPage = ref(1);
-const itemsPerPage = ref(10);
+const itemsPerPage = ref(9);
 const maxVisibleButtons = 5;
 const selectedDate = ref('all');
 const filteredArticles = ref([...articles.value]);
@@ -127,6 +124,11 @@ const scrollToTop = () => {
 const formatDate = (dateString: string) => {
     return dateString;
 };
+
+const router = useRouter()
+function goToDetailArticle(id: string) {
+    router.push(`/article/${id}`)
+}
 </script>
 
 <template>
@@ -148,14 +150,15 @@ const formatDate = (dateString: string) => {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div v-for="(article, index) in displayedArticles" :key="index"
                 class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div class="relative overflow-hidden">
+                <div class="relative overflow-hidden p-4">
                     <img :src="article.image" :alt="article.title"
-                        class="w-full h-48 object-cover transform hover:scale-105 transition-transform duration-300">
-                    <span class="absolute top-2 left-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">{{
-                        article.category }}</span>
+                        class="w-full h-48 rounded-lg object-cover transform hover:scale-105 transition-transform duration-300">
+                    <div class="mt-16px w-fit bg-#DDF9FF text-#37C4E5 text-xs px-4 py-2 rounded-lg">{{
+                        article.category }}</div>
                 </div>
                 <div class="p-4">
-                    <h2 class="font-bold text-lg mb-2">{{ article.title }}</h2>
+                    <h2 @click="goToDetailArticle(article.id)" class="font-bold text-lg mb-2 cursor-pointer">{{
+                        article.title }}</h2>
                     <p class="text-gray-500 text-sm">{{ formatDate(article.date) }}</p>
                 </div>
             </div>
@@ -187,14 +190,15 @@ const formatDate = (dateString: string) => {
                 &gt;
             </button>
 
-            <div class="flex items-center ml-4">
+            <!-- <div class="flex items-center ml-4">
                 <select v-model="itemsPerPage" class="border rounded px-2 py-1 text-sm" @change="updateItemsPerPage">
+                    <option value="9">9</option>
                     <option value="10">10</option>
                     <option value="20">20</option>
                     <option value="30">30</option>
                     <option value="40">40</option>
                 </select>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>

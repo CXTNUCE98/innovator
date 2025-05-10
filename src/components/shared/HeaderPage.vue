@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import HeroImage from "@/public/hero_header.png"
+import Banner from "@/public/banner_introduce.png"
 
 const props = defineProps<{
     title: string
@@ -9,19 +9,24 @@ const props = defineProps<{
 </script>
 
 <template>
-    <section class="relative h-64 md:h-436px bg-cover bg-center mb-16">
-        <img :src="HeroImage" alt="Interior design" class="w-full h-full object-cover" />
-        <div class="absolute inset-0 flex items-end justify-center">
-            <div
-                class="bg-white min-w-330px md:min-w-500px rounded-t-37px bg-opacity-90 py-4 md:py-8 px-12 text-center animate-on-scroll opacity-0 translate-y-5 transition-all duration-700">
-                <h1 class="text-28px md:text-50px font-light mb-1 playfair-display font-normal">{{ title }}</h1>
-                <p class="text-12px md:text-22px text-gray-600 ">{{ subTitle }}</p>
+    <div class="relative flex justify-center items-center py-16 md:py-24 lg:py-29 overflow-hidden">
+        <img class="absolute w-full h-full md:h-auto object-cover" :src="Banner"
+            alt="banner-introduce">
+        <div class="absolute inset-0 "></div>
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
+            <div class="flex flex-col md:flex-row gap-6 md:gap-12 mt-10 md:mt-0">
+                <div class="w-full md:w-1/2">
+                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-#2A2A2A mb-0 md:mb-4">{{title}}</h1>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <p class="text-base sm:text-lg lg:text-xl text-#555555 opacity-90">
+                        {{subTitle}}
+                    </p>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 </template>
-
-
 
 <style scoped>
 @media (prefers-reduced-motion: reduce) {

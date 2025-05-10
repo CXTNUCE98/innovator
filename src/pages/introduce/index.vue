@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import Moment1 from "@/public/moment-1.png"
+import Moment2 from "@/public/moment-2.png"
+import Moment3 from "@/public/moment-3.png"
+import Moment4 from "@/public/moment-4.png"
+import Moment5 from "@/public/moment-5.png"
+import Moment6 from "@/public/moment-6.png"
+
 // Reactive data for team members
 const teammembers = ref([
     {
@@ -25,53 +32,111 @@ const teammembers = ref([
 
 // Stats data
 const stats = ref([
-    { value: '10K+', label: 'Học viên' },
-    { value: '75%', label: 'Bán hàng Dropship' },
-    { value: '25%', label: 'Bán hàng Amazon' },
-    { value: '10%', label: 'Học viên đạt doanh thu >10000$' },
-    { value: '55%', label: 'Học viên đạt doanh thu >3000$' }
+    { value: 10, label: 'Học viên', unit: 'K+', current: 0 },
+    { value: 75, label: 'Bán hàng Dropship', unit: '%', current: 0 },
+    { value: 25, label: 'Bán hàng Amazon', unit: '%', current: 0 },
+    { value: 10, label: 'Học viên đạt doanh thu >10000$', unit: '%', current: 0 },
+    { value: 55, label: 'Học viên đạt doanh thu >3000$', unit: '%', current: 0 }
 ]);
+
+// Function to animate counting
+function animateValue(item, duration = 1500) {
+    const startValue = 0;
+    const endValue = item.value;
+    const startTime = performance.now();
+
+    const updateValue = (currentTime) => {
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
+
+        // Easing function for smoother animation (ease-out)
+        const easeOutProgress = 1 - Math.pow(1 - progress, 3);
+
+        item.current = Math.floor(startValue + (endValue - startValue) * easeOutProgress);
+
+        if (progress < 1) {
+            requestAnimationFrame(updateValue);
+        } else {
+            item.current = endValue; // Ensure we end at the exact target value
+        }
+    };
+
+    requestAnimationFrame(updateValue);
+}
+
+// Flag to track if stats animation has run
+const statsAnimated = ref(false);
 
 // Intersection observer for animations
 onMounted(() => {
     const sections = document.querySelectorAll('.animate-section');
+    const statsSection = document.querySelector('.stats-section');
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
+
+                // Start stats animation when stats section becomes visible (only once)
+                if (entry.target.classList.contains('stats-section') && !statsAnimated.value) {
+                    statsAnimated.value = true; // Set flag to true so animation only runs once
+                    stats.value.forEach((stat, index) => {
+                        // Stagger the animations slightly
+                        setTimeout(() => {
+                            animateValue(stat, 2000);
+                        }, index * 150);
+                    });
+                }
             }
         });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.15 });
 
     sections.forEach(section => {
         observer.observe(section);
     });
 });
+
+const images = ref([
+    {
+        id: 1,
+        src: Moment1,
+        alt: 'Academy team members',
+    },
+    {
+        id: 2,
+        src: Moment2,
+        alt: 'Training session',
+    },
+    {
+        id: 3,
+        src: Moment3,
+        alt: 'Celebration event',
+    },
+    {
+        id: 4,
+        src: Moment4,
+        alt: 'Vietnam brand celebration',
+    },
+    {
+        id: 5,
+        src: Moment5,
+        alt: 'Award ceremony',
+    },
+    {
+        id: 6,
+        src: Moment6,
+        alt: 'Team meeting',
+    },
+]);
 </script>
 
 <template>
     <!-- Banner Section with improved responsiveness -->
-    <div class="relative flex justify-center items-center py-16 md:py-24 lg:py-32 overflow-hidden">
-        <img class="absolute w-full h-full md:h-auto object-cover" src="../../public/banner_introduce.png" alt="banner-introduce">
-        <div class="absolute inset-0 "></div>
-        <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row gap-6 md:gap-12">
-                <div class="w-full md:w-1/2">
-                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-#2A2A2A mb-4">Về chúng tôi</h1>
-                </div>
-                <div class="w-full md:w-1/2">
-                    <p class="text-base sm:text-lg lg:text-xl text-#555555 opacity-90">
-                        Chúng tôi quyết tâm trở thành một trung tâm đào tạo hàng đầu, là nguồn lực đáng tin cậy cho sự phát
+    <SharedHeaderPage title="Về chúng tôi" subTitle="Chúng tôi quyết tâm trở thành một trung tâm đào tạo hàng đầu, là nguồn lực đáng tin cậy cho sự phát
                         triển
                         nhân lực ưu tú, có khả năng thích ứng linh hoạt với công nghệ 4.0 và đóng góp tích cực vào sự phát
                         triển bền
-                        vững của cộng đồng và xã hội.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
+                        vững của cộng đồng và xã hội." />
 
     <!-- Main Content -->
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 lg:py-20">
@@ -84,19 +149,13 @@ onMounted(() => {
                 <div
                     class="p-5 md:p-6 rounded-lg shadow-md relative transition duration-300 animate-item min-h-[250px] flex flex-col">
                     <div
-                        class="absolute -top-5 left-1/2 transform -translate-x-1/2 w-10 h-10 rounded-full  shadow-md flex items-center justify-center">
-                        <div class="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
+                        class="absolute -top-5 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-#FFFBF1 shadow-md flex items-center justify-center">
+                        <div class="w-8 h-8 rounded-full  flex items-center justify-center">
+                            <img src="@/public/eye.png" alt="eye-icon">
                         </div>
                     </div>
                     <div class="mt-6">
-                        <p class="text-gray-600 text-sm sm:text-base">
+                        <p class="text-gray-600 text-center text-sm sm:text-base">
                             Chúng tôi quyết tâm trở thành một trung tâm đào tạo hàng đầu, là nguồn tác động tích cực đến sự
                             phát triển năng lực và tư duy kinh doanh của thế hệ trẻ Việt Nam, và đồng góp vào sự phát triển
                             bền vững của cộng đồng và xã hội.
@@ -108,17 +167,13 @@ onMounted(() => {
                 <div
                     class="bg-white p-5 md:p-6 rounded-lg shadow-md relative transition duration-300 animate-item delay-100 min-h-[250px] flex flex-col">
                     <div
-                        class="absolute -top-5 left-1/2 transform -translate-x-1/2 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center">
-                        <div class="w-8 h-8 rounded-full bg-green-400 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
-                            </svg>
+                        class="absolute -top-5 left-1/2 bg-#FDFFEB transform -translate-x-1/2 w-14 h-14 rounded-full  shadow-md flex items-center justify-center">
+                        <div class="w-8 h-8 rounded-full  flex items-center justify-center">
+                            <img src="@/public/target.png" alt="target-icon">
                         </div>
                     </div>
                     <div class="mt-6">
-                        <p class="text-gray-600 text-sm sm:text-base">
+                        <p class="text-gray-600 text-center text-sm sm:text-base">
                             Với niềm đam mê về sự sáng tạo và sứ mệnh giáo dục, chúng tôi cam kết cung cấp những trải nghiệm
                             học tập chất lượng cao, sáng tạo và hiệu quả. Chúng tôi cam kết đồng hành trên con đường phát
                             triển của học viên, từ đào tạo đến tự triển khai thực tiễn.
@@ -130,17 +185,13 @@ onMounted(() => {
                 <div
                     class="bg-white p-5 md:p-6 rounded-lg shadow-md relative transition duration-300 animate-item delay-200 min-h-[250px] flex flex-col">
                     <div
-                        class="absolute -top-5 left-1/2 transform -translate-x-1/2 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center">
-                        <div class="w-8 h-8 rounded-full bg-blue-300 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
+                        class="absolute -top-5 left-1/2 bg-#DDF9FF transform -translate-x-1/2 w-14 h-14 rounded-full  shadow-md flex items-center justify-center">
+                        <div class="w-8 h-8 rounded-full  flex items-center justify-center">
+                            <img src="@/public/circle.png" alt="circle-icon">
                         </div>
                     </div>
                     <div class="mt-6">
-                        <p class="text-gray-600 text-sm sm:text-base">
+                        <p class="text-gray-600 text-center text-sm sm:text-base">
                             Chúng tôi dành tầm tuyệt đối tạo ra một môi trường đào tạo chất lượng cao, nơi kết hợp giữa công
                             nghệ 4.0 và giáo trình thực tiễn. Sự sáng tạo và đổi mới là điều cốt lõi trong tầm nhìn và được
                             thực hiện thông qua trực tiếp đào tạo và đồng hành triển khai thực tiễn từ các chuyên gia kinh
@@ -152,19 +203,21 @@ onMounted(() => {
         </section>
 
         <!-- Achievement Section -->
-        <section class="mb-16 md:mb-24 animate-section">
+        <section class="mb-16 md:mb-24 animate-section stats-section">
             <h2 class="text-2xl md:text-3xl font-bold text-center mb-4">THÀNH TÍCH</h2>
             <p class="text-center text-gray-600 mb-8 md:mb-12 max-w-3xl mx-auto">
                 Innovator Academy chính thức trở thành đơn vị đào tạo đầu tiên tại Việt Nam được kiểm định và cấp
-                <span class="text-yellow-500 font-bold">Chứng nhận đào tạo</span> về Thương mại điện tử từ cơ quan quản lý
+                <span class="text-#FCAF17 font-bold">Chứng nhận đào tạo</span> về Thương mại điện tử từ cơ quan quản lý
                 nhà nước.
             </p>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
                 <div v-for="(stat, index) in stats" :key="index"
-                    class="text-center p-4 transition duration-300 hover:scale-105 animate-item "
+                    class="text-center p-4 transition duration-300 hover:scale-105 animate-item"
                     :class="`delay-${index * 100}`">
-                    <div class="text-2xl md:text-3xl font-bold text-yellow-500">{{ stat.value }}</div>
+                    <div class="text-36px md:text-50px font-bold text-#B4CD26 odometer-wrapper">
+                        <span class="odometer">{{ stat.current }}</span>{{ stat.unit }}
+                    </div>
                     <div class="text-gray-600 text-sm md:text-base mt-2">{{ stat.label }}</div>
                 </div>
             </div>
@@ -189,6 +242,43 @@ onMounted(() => {
                 </div>
             </div>
         </section>
+    </div>
+
+    <!-- Updated "Khoảnh khắc" section with consistent animations -->
+    <div class="bg-#FFFBF1 mb-40px">
+        <div class="max-w-6xl mx-auto px-4 py-8 font-sans animate-section">
+            <h2 class="text-2xl md:text-30px font-bold text-center my-10 text-gray-800">
+                Khoảnh khắc tại Innovator Academy
+            </h2>
+
+            <!-- Image Gallery -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-16">
+                <div v-for="(image, index) in images" :key="image.id"
+                    class="rounded-lg overflow-hidden shadow-md animate-item" :class="`delay-${index * 100}`">
+                    <img :src="image.src" :alt="image.alt" class="w-full h-64 object-cover" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action Banner -->
+    <div class="max-w-6xl mx-auto px-4 pt-8 pb-80px font-sans">
+        <div class="bg-gray-100 rounded-lg p-6 md:p-8 shadow-md animate-section">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-16">
+                <div>
+                    <h2 class="text-24px md:text-32px font-semibold text-gray-800"><span class="text-#FCAF17">Cùng
+                            nhau</span>, hãy định hình tương lai của đổi mới kỹ thuật số
+                    </h2>
+                    <p class="mt-2 text-gray-600 text-sm md:text-base">
+                        Hãy tham gia cùng chúng tôi trong hành trình học tập thú vị này và nhận phần thưởng cấp bậc
+                    </p>
+                </div>
+                <button
+                    class="mt-4 min-w-160px md:mt-0 px-4 py-2 bg-#FCAF17 text-white font-medium rounded-md hover:bg-amber-400 transition-all duration-300 transform hover:scale-105 animate-item">
+                    Đăng ký ngay
+                </button>
+            </div>
+        </div>
     </div>
 </template>
 <style scoped>
@@ -233,6 +323,26 @@ onMounted(() => {
 
 .delay-400 {
     transition-delay: 0.5s;
+}
+
+/* Odometer animation styling */
+.odometer-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.odometer {
+    display: inline-block;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+    /* Ensures numbers are monospaced */
+    transition: color 0.2s ease;
+}
+
+.odometer.highlight {
+    color: #fbbf24;
+    /* Temporarily highlights changing digits */
 }
 
 /* Additional media queries for finer responsive control */

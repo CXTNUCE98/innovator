@@ -9,17 +9,21 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div class="relative flex justify-center items-center py-16 md:py-24 lg:py-29 overflow-hidden">
-        <img class="absolute w-full h-full md:h-auto object-cover" :src="Banner"
+    <div class="relative flex justify-center items-center h-auto md:h-250px mt-16 overflow-hidden">
+        <img class="absolute w-full h-full object-cover" :src="Banner"
             alt="banner-introduce">
         <div class="absolute inset-0 "></div>
-        <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
-            <div class="flex flex-col md:flex-row gap-6 md:gap-12 mt-10 md:mt-0">
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 ">
+            <div class="flex flex-col md:flex-row gap-6 md:gap-12">
                 <div class="w-full md:w-1/2">
-                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-#2A2A2A mb-0 md:mb-4">{{title}}</h1>
+                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-#2A2A2A mb-0 md:mb-4 flex items-center gap-2">
+                        <i class='bx bx-star text-yellow-500'></i>
+                        {{title}}
+                    </h1>
                 </div>
                 <div class="w-full md:w-1/2">
-                    <p class="text-base sm:text-lg lg:text-xl text-#555555 opacity-90">
+                    <p class="text-base sm:text-lg lg:text-xl text-#555555 opacity-90 flex items-start gap-2">
+                        <i class='bx bx-info-circle text-blue-500 mt-1'></i>
                         {{subTitle}}
                     </p>
                 </div>

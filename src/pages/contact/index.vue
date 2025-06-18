@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
-import Location from '@/public/location.png'
-import Call from '@/public/Call.png'
-import Email from '@/public/gmail.png'
+import { ref, reactive, watch } from 'vue'
 
 // Form state
 const formData = reactive({
@@ -21,32 +18,58 @@ const formErrors = reactive({
     message: ''
 })
 
+// Real-time validation
+const validateField = (field: keyof typeof formData, value: string) => {
+    switch (field) {
+        case 'phone':
+            if (!value.trim()) {
+                formErrors.phone = 'Vui lòng nhập số điện thoại'
+            } else {
+                formErrors.phone = ''
+            }
+            break
+        case 'email':
+            if (!value.trim()) {
+                formErrors.email = 'Vui lòng nhập email'
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                formErrors.email = 'Email không hợp lệ'
+            } else {
+                formErrors.email = ''
+            }
+            break
+        case 'message':
+            if (!value.trim()) {
+                formErrors.message = 'Vui lòng nhập nội dung'
+            } else {
+                formErrors.message = ''
+            }
+            break
+    }
+}
+
+// Watch for changes and validate in real-time
+watch(() => formData.phone, (newValue) => {
+    validateField('phone', newValue)
+})
+
+watch(() => formData.email, (newValue) => {
+    validateField('email', newValue)
+})
+
+watch(() => formData.message, (newValue) => {
+    validateField('message', newValue)
+})
+
 const validateForm = () => {
     let isValid = true
 
-    // Reset errors
-    Object.keys(formErrors).forEach(key => {
-        formErrors[key as keyof typeof formErrors] = ''
-    })
+    // Validate all fields
+    validateField('phone', formData.phone)
+    validateField('email', formData.email)
+    validateField('message', formData.message)
 
-    // Validate phone
-    if (!formData.phone.trim()) {
-        formErrors.phone = 'Vui lòng nhập số điện thoại'
-        isValid = false
-    }
-
-    // Validate email
-    if (!formData.email.trim()) {
-        formErrors.email = 'Vui lòng nhập email'
-        isValid = false
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-        formErrors.email = 'Email không hợp lệ'
-        isValid = false
-    }
-
-    // Validate message
-    if (!formData.message.trim()) {
-        formErrors.message = 'Vui lòng nhập nội dung'
+    // Check if any errors exist
+    if (formErrors.phone || formErrors.email || formErrors.message) {
         isValid = false
     }
 
@@ -84,7 +107,7 @@ const handleSubmit = async () => {
 // Contact information
 const contactInfo = [
     {
-        icon: 'bx bx-location-plus',
+        icon: 'bx bxs-location-plus',
         label: 'Địa chỉ',
         value: 'Tầng 7, tòa nhà Milk Group, 212 - 214 Nguyễn Trãi, Thanh Xuân, Hà Nội'
     },
@@ -99,22 +122,20 @@ const contactInfo = [
         value: 'Innovatoracademy@gmail.com'
     }
 ]
-
-
 </script>
 
 <template>
     <SharedHeaderPage title="Hãy liên lạc để có một điều gì đó tuyệt vời cùng nhau..."
         subTitle="Innovator Academy quyết tâm trở thành một trung tâm đào tạo hàng đầu, là nguồn lực đáng tin cậy cho sự phát triển nhân lực ưu tú, có khả năng thích ứng linh hoạt với công nghệ 4.0 và đóng góp tích cực vào sự phát triển bền vững của cộng đồng và xã hội." />
-    <div class="min-h-screen bg-gray-50 py-8">
+    <div class="min-h-screen bg-gray-50 pt-16 pb-12">
         <div class="max-w-6xl mx-auto px-2">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <!-- Info -->
-                <div class="space-y-4">
-                    <div v-for="info in contactInfo" :key="info.label" class="flex items-center bg-white rounded-xl shadow p-4">
-                        <div class="flex items-center justify-center w-8 h-8 bg-#FFFBF1 rounded-full mr-4">
-                            <!-- <img :src="info.icon" class="h-18px bg-#fcaf17" alt="location-logo"> -->
-                            <i :class='info.icon' class="text-#fcaf17"></i>
+                <div class="flex flex-col justify-between gap-2">
+                    <div v-for="info in contactInfo" :key="info.label"
+                        class="flex items-center bg-white rounded-xl shadow p-8">
+                        <div class="flex items-center justify-center w-12 h-12 bg-#FFFBF1 rounded-full mr-4">
+                            <i :class='info.icon' class="text-#fcaf17 text-20px"></i>
                         </div>
                         <div>
                             <div class="font-semibold text-gray-800">{{ info.label }}</div>
@@ -125,42 +146,69 @@ const contactInfo = [
                 <!-- Form -->
                 <div class="bg-white rounded-xl shadow p-6">
                     <div class="font-bold text-lg mb-2">Gửi tin nhắn cho chúng tôi</div>
-                    <div class="text-gray-500 text-sm mb-4">Thông tin cá nhân của bạn sẽ được chúng tôi bảo mật tuyệt đối</div>
+                    <div class="text-gray-500 text-sm mb-4">Thông tin cá nhân của bạn sẽ được chúng tôi bảo mật tuyệt
+                        đối</div>
                     <form @submit.prevent="handleSubmit" class="space-y-4">
-                        <div>
-                            <input v-model="formData.phone" type="text" placeholder="Số điện thoại"
-                                class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-yellow-400"
-                                :class="{ 'border-red-500': formErrors.phone }" />
-                            <div v-if="formErrors.phone" class="text-red-500 text-xs mt-1">{{ formErrors.phone }}</div>
+                        <div class="flex flex-col md:flex-row gap-4">
+                            <div class="flex-1">
+                                <div class="relative">
+                                    <input v-model="formData.phone"
+                                        class="peer w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-3 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
+                                        :class="{ '!border-red-500': formErrors.phone }" />
+                                    <div v-if="formErrors.phone" class="text-red-500 text-xs mt-1">{{ formErrors.phone
+                                    }}
+                                    </div>
+                                    <label
+                                        class="absolute cursor-text bg-white px-1 left-2.5 text-slate-400 text-sm transition-all transform origin-left pointer-events-none z-10"
+                                        :class="[
+                                            formData.phone.trim() || 'peer-focus:-top-2 peer-focus:left-2.5 peer-focus:text-xs peer-focus:text-slate-400 peer-focus:scale-90',
+                                            formData.phone.trim() ? '-top-2 left-2.5 text-xs text-slate-400 scale-90' : 'top-3'
+                                        ]">
+                                        Số điện thoại <span class="text-red-500">*</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <div class="relative">
+                                    <input v-model="formData.email"
+                                        class="peer w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-3 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
+                                        :class="{ '!border-red-500': formErrors.email }" />
+                                    <div v-if="formErrors.email" class="text-red-500 text-xs mt-1">{{ formErrors.email
+                                    }}
+                                    </div>
+                                    <label
+                                        class="absolute cursor-text bg-white px-1 left-2.5 text-slate-400 text-sm transition-all transform origin-left pointer-events-none z-10"
+                                        :class="[
+                                            formData.email.trim() || 'peer-focus:-top-2 peer-focus:left-2.5 peer-focus:text-xs peer-focus:text-slate-400 peer-focus:scale-90',
+                                            formData.email.trim() ? '-top-2 left-2.5 text-xs text-slate-400 scale-90' : 'top-3'
+                                        ]">
+                                        Địa chỉ email <span class="text-red-500">*</span>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
+
                         <div>
-                            <input v-model="formData.email" type="email" placeholder="Địa chỉ email"
-                                class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-yellow-400"
-                                :class="{ 'border-red-500': formErrors.email }" />
-                            <div v-if="formErrors.email" class="text-red-500 text-xs mt-1">{{ formErrors.email }}</div>
-                        </div>
-                        <div>
-                            <textarea v-model="formData.message" rows="4" placeholder="Bạn muốn nhắn nhủ điều gì với chúng tôi không ^^"
-                                class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-yellow-400 resize-none"
-                                :class="{ 'border-red-500': formErrors.message }" />
-                            <div v-if="formErrors.message" class="text-red-500 text-xs mt-1">{{ formErrors.message }}</div>
+                            <textarea v-model="formData.message" rows="6"
+                                placeholder="Bạn muốn nhắn nhủ điều gì với chúng tôi không ^^"
+                                class="w-full px-4 py-3 border border-slate-200 rounded-md focus:border-slate-400 hover:border-slate-300 resize-none text-slate-700 text-sm transition duration-300 ease focus:outline-none shadow-sm focus:shadow"
+                                :class="{ '!border-red-500': formErrors.message }" />
+                            <div v-if="formErrors.message" class="text-red-500 text-xs mt-1">{{ formErrors.message }}
+                            </div>
                         </div>
                         <button type="submit" :disabled="isLoading"
-                            class="bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-2 px-6 rounded transition w-full">
+                            class="bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-3 px-6 rounded-md transition  disabled:opacity-50 disabled:cursor-not-allowed">
                             {{ isLoading ? 'Đang gửi...' : 'Gửi thông tin' }}
                         </button>
-                        <div v-if="formSubmitted" class="text-green-600 text-sm mt-2">Gửi thành công!</div>
+                        <div v-if="formSubmitted" class="text-green-600 text-sm mt-2 text-center">Gửi thành công!</div>
                     </form>
                 </div>
             </div>
             <!-- Map -->
             <div class="mt-8">
-                <iframe
-                    class="w-full rounded-2xl h-72 md:h-96 border-0"
-                    src="https://www.google.com/maps?q=21.002085,105.815821&z=17&output=embed"
-                    allowfullscreen
-                    loading="lazy"
-                ></iframe>
+                <iframe class="w-full rounded-2xl h-72 md:h-96 border-0"
+                    src="https://www.google.com/maps?q=21.002085,105.815821&z=17&output=embed" allowfullscreen
+                    loading="lazy"></iframe>
             </div>
         </div>
     </div>

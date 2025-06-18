@@ -17,13 +17,11 @@ const props = defineProps<{
             <div class="flex flex-col md:flex-row gap-6 md:gap-12">
                 <div class="w-full md:w-1/2">
                     <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-#2A2A2A mb-0 md:mb-4 flex items-center gap-2">
-                        <i class='bx bx-star text-yellow-500'></i>
                         {{title}}
                     </h1>
                 </div>
                 <div class="w-full md:w-1/2">
                     <p class="text-base sm:text-lg lg:text-xl text-#555555 opacity-90 flex items-start gap-2">
-                        <i class='bx bx-info-circle text-blue-500 mt-1'></i>
                         {{subTitle}}
                     </p>
                 </div>

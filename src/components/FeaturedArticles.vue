@@ -4,32 +4,8 @@ import Amazon from "@/public/amazon_article.png"
 import Livestream from "@/public/livestream_article.png"
 import Teamwork from "@/public/teamwork_article.png"
 
-const articles = [
-    {
-        title: 'Bí Quyết Thành Công Với Dropship: Khám Phá Chiến Lược Đỉnh Cao',
-        des: 'Bạn đang muốn khởi nghiệp với mô hình dropship nhưng chưa biết bắt đầu từ đâu? Hãy cùng chúng tôi khám phá những chiến lược đỉnh cao để xây dựng một cửa hàng dropship thành công. Khóa học của chúng tôi sẽ trang bị cho bạn kiến thức từ cơ bản đến nâng cao, giúp bạn tự tin trên con đường kinh doanh trực tuyến.',
-        img: Dropship,
-        date: '24/06/2024'
-    },
-    {
-        title: 'Làm Chủ Sàn Amazon: Từ Người Mới Đến Chuyên Gia',
-        des: 'Amazon là một thị trường tiềm năng nhưng cũng đầy thách thức. Để trở thành người bán hàng thành công trên Amazon sử dụng công cụ quảng cáo hiệu quả.',
-        img: 'https://dddn.1cdn.vn/thumbs/1200x630/2021/07/08/diendandoanhnghiep.vn-media-uploaded-502-2021-07-07-_jeffbezos1.jpg',
-        date: '24/06/2024'
-    },
-    {
-        title: 'Livestream Bán Hàng: Nghệ Thuật Tăng Doanh Số Tức Thì',
-        des: 'Livestream bán hàng đang trở thành xu hướng hot giúp tăng doanh số một cách nhanh chóng. Những ảnh hưởng nào để thực hiện một buổi livestream thành công?',
-        img: Livestream,
-        date: '24/06/2024'
-    },
-    {
-        title: 'Thành Công Với Kinh Doanh Trực Tuyến: Hành Trình Từ A Đến Z',
-        des: 'Kinh doanh trực tuyến không chỉ là một xu hướng mà còn là cơ hội để bạn kiếm định bản thân và tạo ra nguồn thu nhập ổn định.',
-        img: Teamwork,
-        date: '24/06/2024'
-    },
-]
+const getArticles =  ref([...articles.value].sort(() => Math.random() - 0.5).slice(0, 4))
+
 
 function getRandomItem(array) {
     // Kiểm tra mảng trống
@@ -44,8 +20,8 @@ function getRandomItem(array) {
     return array[randomIndex];
 }
 
-const outstanding = getRandomItem(articles)
-const articleFeatures = getRemainingItems(articles, outstanding)
+const outstanding = getRandomItem(getArticles.value)
+const articleFeatures = getRemainingItems(getArticles.value, outstanding)
 
 function getRemainingItems(array, selectedItem) {
     // Kiểm tra mảng trống
@@ -79,6 +55,11 @@ onMounted(() => {
         });
     }
 });
+
+const router = useRouter()
+function goToDetailArticle(id: string) {
+    router.push(`/article/${id}`)
+}
 </script>
 
 <template>
@@ -100,14 +81,14 @@ onMounted(() => {
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Featured Article -->
-                <div class="featured-article bg-white rounded-lg overflow-hidden transform transition-transform duration-300 hover:-translate-y-1"
+                <div class="featured-article bg-white rounded-lg overflow-hidden transform transition-transform duration-300"
                     @mouseover="hoveredArticle = 'dropship'" @mouseleave="hoveredArticle = null">
                     <div class="relative h-56 md:h-64">
-                        <img :src="outstanding.img" alt="Featured Article" class="w-full h-full rounded-16px object-cover">
+                        <img :src="outstanding.image" alt="Featured Article" class="w-full h-full rounded-16px object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t rounded-16px from-black/50 to-transparent"></div>
                     </div>
                     <div>
-                        <h2 class="text-16px font-bold py-3 cursor-pointer">{{ outstanding.title }}
+                        <h2 @click="goToDetailArticle(outstanding.id)" class="text-16px font-bold py-3 cursor-pointer">{{ outstanding.title }}
                         </h2>
                         <span
                             class="inline-block bg-blue-100 text-blue-500 px-3 py-1 text-xs rounded-full font-medium mb-3">Dropship</span>
@@ -123,11 +104,11 @@ onMounted(() => {
                         <div class="article-card flex flex-col md:flex-row gap-4 bg-white rounded-lg overflow-hidden transform transition-transform duration-300 hover:-translate-y-1"
                             @mouseover="hoveredArticle = item.title" @mouseleave="hoveredArticle = null">
                             <div class="md:w-2/5 h-40 overflow-hidden">
-                                <img :src="item.img" alt="Article image" class="w-full h-full object-cover rounded-12px">
+                                <img :src="item.image" alt="Article image" class="w-full h-full object-cover rounded-12px">
                             </div>
                             <div class="flex-1">
                                 <div class="flex flex-col justify-between items-start mb-1">
-                                    <h3 class="text-16px font-bold cursor-pointer">{{ item.title }}</h3>
+                                    <h3 @click="goToDetailArticle(item.id)" class="text-16px font-bold cursor-pointer">{{ item.title }}</h3>
                                     <span
                                         class="inline-block bg-blue-100 text-blue-500 px-2 py-1 text-xs rounded-full font-medium mt-2">Dropship</span>
                                 </div>

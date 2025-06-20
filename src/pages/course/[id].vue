@@ -89,33 +89,33 @@ onMounted(() => {
     startCountdown(courseDetail.value?.promotions?.dateDiscount)
 });
 
-const hours = ref()
-const minutes = ref()
-const seconds = ref()
-function startCountdown(targetDateStr) {
+const hours = ref(0)
+const minutes = ref(0)
+const seconds = ref(0)
+
+function startCountdown(targetDateStr: string) {
+    if (!targetDateStr) return;
     const [day, month, year] = targetDateStr.split("/").map(Number);
-    let targetDate = new Date(year, month - 1, day);
+    let targetDate = new Date(year, month - 1, day, 23, 59, 59);
 
     function updateCountdown() {
         const now = new Date();
-        let diff = targetDate - now;
+        let diff = targetDate.getTime() - now.getTime();
 
-        if (diff <= 0) {
-            // Nếu đã hết thời gian, cộng thêm 3 ngày
-            targetDate.setDate(targetDate.getDate() + 3);
-            diff = targetDate - now;
+        // Nếu đã hết hạn, cộng thêm 3 ngày liên tục cho đến khi targetDate > now
+        while (diff <= 0) {
+            targetDate = new Date(targetDate.getTime() + 3 * 24 * 60 * 60 * 1000);
+            diff = targetDate.getTime() - now.getTime();
         }
 
         hours.value = Math.floor(diff / (1000 * 60 * 60));
         minutes.value = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         seconds.value = Math.floor((diff % (1000 * 60)) / 1000);
-
-        return { hours, minutes, seconds, nextTarget: targetDate };
     }
 
+    updateCountdown();
     setInterval(updateCountdown, 1000);
 }
-
 
 const numberShowFeedback = ref(2)
 const isAnimating = ref(false)
@@ -141,12 +141,18 @@ const showFeedbacks = computed(() => {
 function formatNumberWithDots(number: string) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
+
+const router = useRouter()
+function onGoBack() {
+    router.back()
+}
 </script>
 
 <template>
+    
     <main class="max-w-6xl mx-auto mt-64px px-4 py-8 md:py-12">
-        <div class="hidden md:block pb-32px">
-            <i class='bx bx-arrow-back rounded-full bg-#F5F5F5 p-2 text-20px '></i>
+        <div @click="onGoBack" class="hidden md:block pb-32px">
+            <i class='bx bx-arrow-back rounded-full cursor-pointer bg-#F5F5F5 p-2 text-20px '></i>            
         </div>
         <div class="flex lg:flex-row flex-col-reverse gap-8 ">
             <!-- Left Content Section -->
@@ -373,7 +379,7 @@ function formatNumberWithDots(number: string) {
                                             class="px-2.5 py-1 bg-white/30 rounded-lg flex justify-center items-end gap-2.5 overflow-hidden">
                                             <div
                                                 class="justify-start text-white text-base font-medium font-['Inter'] leading-normal">
-                                                {{ hours > 9 ? hours : `0${hours}` }} </div>
+                                                {{ hours < 10 ? `0${hours}` : hours }} </div>
                                         </div>
                                         <div class="inline-flex flex-col justify-start items-start gap-1">
                                             <div class="w-1 h-1 bg-white rounded-3xl"></div>
@@ -383,7 +389,7 @@ function formatNumberWithDots(number: string) {
                                             class="px-2.5 py-1 bg-white/30 rounded-lg flex justify-center items-end gap-2.5 overflow-hidden">
                                             <div
                                                 class="justify-start text-white text-base font-medium font-['Inter'] leading-normal">
-                                                {{ minutes > 9 ? minutes : `0${minutes}` }}</div>
+                                                {{ minutes < 10 ? `0${minutes}` : minutes }}</div>
                                         </div>
                                         <div class="inline-flex flex-col justify-start items-start gap-1">
                                             <div class="w-1 h-1 bg-white rounded-3xl"></div>
@@ -393,7 +399,7 @@ function formatNumberWithDots(number: string) {
                                             class="px-2.5 py-1 bg-white/30 rounded-lg flex justify-center items-end gap-2.5 overflow-hidden">
                                             <div
                                                 class="justify-start text-white text-base font-medium font-['Inter'] leading-normal">
-                                                {{ seconds > 9 ? seconds : `0${seconds}` }}</div>
+                                                {{ seconds < 10 ? `0${seconds}` : seconds }}</div>
                                         </div>
                                     </div>
                                     <div class="self-stretch inline-flex justify-end items-center gap-2">

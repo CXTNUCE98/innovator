@@ -5,16 +5,20 @@ const idExpert = computed(() => {
 })
 
 const expertDetail = ref(teamOfExperts.value?.find((el) => el.id === idExpert.value))
+const router = useRouter()
+function onGoBack() {
+    router.back()
+}
 </script>
 
 <template>
     <div class="max-w-6xl mx-auto mt-64px px-4 py-8 md:py-12">
-        <div class="hidden md:block pb-32px">
-            <i class='bx bx-arrow-back rounded-full bg-#F5F5F5 p-2 text-20px '></i>
+        <div @click="onGoBack" class="hidden md:block pb-32px">
+            <i class='bx bx-arrow-back rounded-full bg-#F5F5F5 p-2 text-20px cursor-pointer'></i>
         </div>
         <div class="flex flex-wrap gap-64px justify-center">
             <div>
-                <img :src="expertDetail.img" alt="img" class="w-full rounded-16px h-full object-cover">
+                <img :src="expertDetail.img" alt="img" class="w-full max-h-400px rounded-16px h-full object-cover">
             </div>
             <div class="text-#555555">
                 <div class="text-#2A2A2A text-36px font-bold">

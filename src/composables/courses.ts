@@ -261,7 +261,7 @@ export const courses = [
                 'content': [
                     'Lựa chọn công cụ phù hợp',
                     'Thiết lập và sử dụng các nền tảng hiệu quả'
-                ],
+                ]
             },
             {
                 'title': 'Chiến lược và thực hành',
@@ -269,7 +269,7 @@ export const courses = [
                 'content': [
                     'Áp dụng chiến lược hiệu quả trong thực tế',
                     'Phân tích case study thực tế từ doanh nghiệp'
-                ],
+                ]
             },
             {
                 'title': 'Tối ưu hoá và đo lường',
@@ -277,7 +277,7 @@ export const courses = [
                 'content': [
                     'Cách phân tích dữ liệu để tối ưu hoá',
                     'Công cụ đo lường hiệu suất'
-                ],
+                ]
             }],
         feedbacks: [
             {

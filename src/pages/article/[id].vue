@@ -5,12 +5,16 @@ const idBlog = computed(() => {
 })
 
 const blockDetail = ref(articles.value?.find((el) => el.id === idBlog.value))
+const router = useRouter()
+function onGoBack() {
+    router.back()
+}
 </script>
 
 <template>
     <div class="max-w-6xl mx-auto mt-64px px-4 py-8 md:py-12">
-        <div class="hidden md:block pb-32px">
-            <i class='bx bx-arrow-back rounded-full bg-#F5F5F5 p-2 text-20px '></i>
+        <div @click="onGoBack" class="hidden md:block pb-32px">
+            <i class='bx bx-arrow-back rounded-full cursor-pointer bg-#F5F5F5 p-2 text-20px '></i>
         </div>
 
         <img :src="blockDetail?.image" alt="Dropshipping Success"

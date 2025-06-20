@@ -4,7 +4,7 @@ export const teamOfExperts = ref([
         name: 'Trần Quốc Lợi',
         gender: 'Male',
         duty: 'Cổ đông sáng lập',
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb-NGEQDekk2BwsllLjk4tcIM_BPIzXECdsg&s',
+        img: 'https://static1.cbrimages.com/wordpress/wp-content/uploads/2021/06/TheRock.jpg',
         experience: [
             'Đồng sáng lập iCheck',
             'Đồng sáng lập HecaTech',
@@ -23,7 +23,7 @@ export const teamOfExperts = ref([
         name: 'Nguyễn Mai Linh',
         gender: 'Female',
         duty: 'Giám đốc chiến lược',
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb-NGEQDekk2BwsllLjk4tcIM_BPIzXECdsg&s',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Elizabeth_Olsen_at_the_2024_Toronto_International_Film_Festival_2_%28better_crop%29.jpg/1200px-Elizabeth_Olsen_at_the_2024_Toronto_International_Film_Festival_2_%28better_crop%29.jpg',
         experience: [
             '10 năm kinh nghiệm tại các tập đoàn đa quốc gia trong lĩnh vực FMCG',
             '5 năm tư vấn chiến lược cho các Start-Up công nghệ',
@@ -39,7 +39,7 @@ export const teamOfExperts = ref([
         name: 'Phạm Văn Hùng',
         gender: 'Male',
         duty: 'Chuyên gia công nghệ',
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb-NGEQDekk2BwsllLjk4tcIM_BPIzXECdsg&s',
+        img: 'https://cdn.galaxycine.vn/media/h/u/hu-doc.jpg',
         experience: [
             'CTO tại một công ty công nghệ lọt top 10 Startup tại Việt Nam',
             '15 năm kinh nghiệm phát triển hệ thống phần mềm quy mô lớn',
@@ -54,7 +54,7 @@ export const teamOfExperts = ref([
         name: 'Lê Minh Tuấn',
         gender: 'Male',
         duty: 'Cố vấn tài chính',
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb-NGEQDekk2BwsllLjk4tcIM_BPIzXECdsg&s',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Chris_Hemsworth_by_Gage_Skidmore_2_%28cropped%29.jpg/1200px-Chris_Hemsworth_by_Gage_Skidmore_2_%28cropped%29.jpg',
         experience: [
             'Tốt nghiệp MBA chuyên ngành Tài chính tại Anh Quốc',
             '8 năm làm việc tại Ernst & Young',
@@ -69,7 +69,7 @@ export const teamOfExperts = ref([
         name: 'Vũ Thị Kim Ngân',
         gender: 'Female',
         duty: 'Chuyên gia vận hành',
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb-NGEQDekk2BwsllLjk4tcIM_BPIzXECdsg&s',
+        img: 'https://kenh14cdn.com/203336854389633024/2024/2/8/photo-1-1707387442155399580321.jpg',
         experience: [
             '12 năm quản lý vận hành chuỗi cung ứng tại Unilever Việt Nam',
             'Tư vấn hệ thống quản trị vận hành cho doanh nghiệp SME',
@@ -84,7 +84,7 @@ export const teamOfExperts = ref([
         name: 'Đặng Hoàng Nam',
         gender: 'Male',
         duty: 'Cố vấn khởi nghiệp',
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb-NGEQDekk2BwsllLjk4tcIM_BPIzXECdsg&s',
+        img: 'https://m.media-amazon.com/images/M/MV5BNzQ0YWM1ODEtZDFkYy00MGJhLTkwZDUtMzVkZjljODU3ZTRmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
         experience: [
             'Thành viên hội đồng cố vấn nhiều chương trình ươm tạo Startup',
             'Kinh nghiệm khởi nghiệp với 3 công ty công nghệ tại Việt Nam và Singapore',

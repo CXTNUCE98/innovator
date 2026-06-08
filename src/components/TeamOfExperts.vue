@@ -30,11 +30,12 @@ function goToExpertsPage() {
             </div>
 
             <!-- Right team cards -->
-            <div class="relative lg:w-2/3 grid grid-cols-2 sm:grid-cols-3 gap-6 py-4 rounded-lg">
+            <div class="relative lg:w-2/3 grid grid-cols-2 sm:grid-cols-3 gap-6 py-4 rounded-lg overflow-hidden">
                 <div class="absolute inset-0 bg-#FFFBF1 m-auto h-64 w-2000px"></div>
                 <div v-for="(member, index) in teamOfExperts" :key="index"
                     class="bg-white z-10 rounded-lg shadow p-4 cursor-pointer flex flex-col items-center justify-center hover:shadow-md transition-shadow duration-300">
-                    <img @click="handleRedirect(member.id)" class="w-full h-full object-cover rounded-md" :src="member.img" alt="">
+                    <img @click="handleRedirect(member.id)" class="w-full h-full object-cover rounded-md"
+                        :src="member.img" alt="">
                     <p @click="handleRedirect(member.id)" class="text-sm text-center text-gray-800 font-medium">{{
                         member.name }}</p>
                 </div>

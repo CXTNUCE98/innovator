@@ -38,7 +38,7 @@ const toggleItem = (index: number) => {
 
 <template>
     <!-- <div class="w-full px-6 md:px-[10%] lg:px-[20%] py-[60px] md:py-[80px] overflow-hidden"> -->
-    <div class="max-w-6xl mx-auto mt-64px px-4 py-8 md:py-12 overflow-hidden">
+    <div class="w-full px-4 md:px-12 lg:px-[200px] overflow-hidden">
         <div class="bg-[#FFFBF1] p-20px md:p-[100px] flex flex-col md:flex-row md:gap-[40px] lg:gap-[80px]">
             <div class="w-full md:w-[40%] lg:w-[30%] mb-8 md:mb-0">
                 <h2 class="text-2xl font-bold mb-8 text-gray-900">Câu hỏi thường gặp</h2>

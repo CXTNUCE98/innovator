@@ -64,7 +64,7 @@ function goToDetailArticle(id: string) {
 
 <template>
     <!-- <div class="w-full px-6 md:px-[10%] lg:px-[20%] py-[60px] md:py-[80px]"> -->
-    <div class="max-w-6xl mx-auto mt-64px px-4 py-8 md:py-12">
+    <div class="w-full px-4 md:px-12 lg:px-[200px]">
         <div class="container mx-auto max-w-6xl">
             <header class="mb-8">
                 <div class="flex flex-wrap justify-between">
